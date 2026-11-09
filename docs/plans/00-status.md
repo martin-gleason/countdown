@@ -39,7 +39,7 @@ Counted from the register itself. A register with no rows still gets a line.
 | Owner items (`O`) | 8 | 3 | 0 | 5 |
 | Agent items (`A`) | 4 | 3 | 0 | 1 |
 | Hooks (`H`) | 8 | 0 | 0 | 8 |
-| Mutations (`M`) | 11 | 1 | 0 | 10 |
+| Mutations (`M`) | 15 | 1 | 0 | 14 |
 | Chores (`C`) | 4 | 1 | 0 | 3 |
 | Other (F) (`F`) | 3 | 3 | 0 | 0 |
 | Gates (`G`) | 6 | 5 | 0 | 1 |
@@ -56,7 +56,7 @@ Counted from the register itself. A register with no rows still gets a line.
 | `A` | done | 1 |
 | `A` | open | 3 |
 | `H` | built | 8 |
-| `M` | killed | 10 |
+| `M` | killed | 14 |
 | `M` | proposed | 1 |
 | `C` | built | 3 |
 | `C` | open | 1 |
@@ -93,7 +93,7 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | agent | RR7 | — | open | CI's macos-26 runner has Xcode 26.6 and Swift 6.3.3 (run on PR #2, 2026-11-08); local is Xcode 27.2 and Swift 6.4.2. Cod… |
 | agent | RR8 | — | open | A malformed style JSON shows only at runtime, as a blank widget. |
 | human | C3 | P1 | open | Install signed builds on every device, configure once, set the yearly reinstall reminder (D17), confirm still running af… |
-| owner | D18 | — | proposed | Amends D4: timeline entries fall one second after each target + k·3600 s, and every boundary instant belongs to the earl… |
+| owner | D18 | — | proposed | Amends D4: a timeline entry sits one second after every instant a shown value changes — each target + k·3600 s, each loc… |
 | owner | O6 | P1 | open | Confirm the paid Apple Developer membership is active and give the Team ID for the App Group and iCloud identifiers. |
 | owner | O7 | P1 | open | After C0, turn on branch protection for main: PR required, CI required, rebase-merge only. |
 | owner | O8 | P1 | open | Read CLAUDE.md, the reviewer and the vendored conventions, then run checkinstructions.py --acknowledge --date <day> in t… |

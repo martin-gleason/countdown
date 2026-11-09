@@ -1,6 +1,6 @@
 # G2 — the core's shape
 
-Created: 2026-11-08 21:30 -06:00 · Edited: 2026-11-08 21:30 -06:00
+Created: 2026-11-08 21:30 -06:00 · Edited: 2026-11-08 21:47 -06:00
 
 Spec §7 says nothing scales past Phase 1 until the core's shape is ratified. This is that shape: what `CountdownCore` (chore `C2`) exposes to the widgets, and one amendment found while building it. **Answer under each question. An unanswered question stays open.**
 
@@ -15,7 +15,7 @@ Spec §7 says nothing scales past Phase 1 until the core's shape is ratified. Th
 | `ymd` | years, months and days, from Calendar components in the current zone |
 | `progress` | 0…1 from start to target; `nil` without a start date, so Ring and Bar fall back |
 
-**`timelinePlan(from:target:)`**: now, plus 24 entries one second after each whole hour from the target. The widget reloads after the last entry.
+**`timelinePlan(from:target:calendar:)`**: now, then an entry one second after every change in what is shown over the next 24 hours (each whole hour from the target, each local midnight, and any other change the builder finds by checking). The widget reloads after the last entry.
 
 **`StyleLibrary.bundled.resolve(name, for: family, hasStartDate:)`**: the style to draw, following fallbacks. It never fails. An unknown name, a cycle or a too-long chain ends at the built-in Hours and says why.
 
@@ -43,10 +43,17 @@ An unknown value, an unknown family name, a missing field or a non-positive `mil
 
 ## Q1 — Ratify `D18` (amends `D4`)
 
-Entries dated exactly on the hour boundary showed the old number for the whole hour, because a floored count changes just *after* the boundary. So entries sit **one second after** each boundary, and every boundary instant belongs to the earlier value. At exactly 17:00:00 on the target day, the widget reads "< 1"; one second later it reads "Now". The tests that found this are `TimelineTests/constantBetweenEntries` and `crossesTarget`.
+`D4` put entries on each whole hour from the target. Building and reviewing it showed two problems:
+
+1. **On the boundary is too early.** A floored count changes just *after* the boundary, so an entry dated on it showed the old number for the hour. Entries now sit one second after.
+2. **Whole hours are not the only changes.** Calendar's month-end clamping makes Y/M/D step at **local midnight**. In :30 and :45 zones (India, Nepal, Newfoundland, Adelaide, Chatham), and for any target not on the hour, midnight is not a whole hour from the target. The review measured a stale Y/M/D for 30–45 minutes about once a month. So entries now also sit at each local midnight. Every interval is then checked, and any remaining change is found by bisection.
+
+The guarantee: what a widget shows lags the true value by at most one second. `TimelineTests/yearAroundTarget` walks the widget's real reload cycle through a full year in four zones and two targets, and checks that it holds.
+
+One side effect, which Foundation and spec `FR7` produce: across some month-end midnights Y/M/D steps **up** (for example 3y 6m 0d → 3y 6m 1d), because months differ in length. Days and hours never step up.
 
 - **A (recommended):** ratify `D18`.
-- **B:** keep exact boundaries and change the rules instead (for example, round the instant up). That is more code, for a one-second difference nobody sees.
+- **B:** narrow the promise to hours and Days only, and accept a stale Y/M/D at some midnights. That is less code, and Stacked and Sentence would show the wrong thing for up to 45 minutes.
 
 **Answer:**
 
