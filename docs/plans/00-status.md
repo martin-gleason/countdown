@@ -40,7 +40,7 @@ Counted from the register itself. A register with no rows still gets a line.
 | Agent items (`A`) | 4 | 3 | 0 | 1 |
 | Hooks (`H`) | 8 | 0 | 0 | 8 |
 | Mutations (`M`) | 11 | 1 | 0 | 10 |
-| Chores (`C`) | 4 | 2 | 0 | 2 |
+| Chores (`C`) | 4 | 1 | 0 | 3 |
 | Other (F) (`F`) | 3 | 3 | 0 | 0 |
 | Gates (`G`) | 6 | 5 | 0 | 1 |
 
@@ -58,8 +58,8 @@ Counted from the register itself. A register with no rows still gets a line.
 | `H` | built | 8 |
 | `M` | killed | 10 |
 | `M` | proposed | 1 |
-| `C` | built | 2 |
-| `C` | open | 2 |
+| `C` | built | 3 |
+| `C` | open | 1 |
 | `F` | not built | 3 |
 | `G` | done | 1 |
 | `G` | open | 5 |
@@ -85,7 +85,6 @@ Every open row in the register. Owner is the row's Owner column where the table 
 
 | Owner | ID | P | Status | Item |
 |---|---|---|---|---|
-| agent | C2 | P0 | open | CountdownCore package: snapshot math, style decoder, timeline builder, tests |
 | agent | RR1 | — | open | A widget sees a target change only after its host app runs on that device, and the Watch app may rarely run. |
 | agent | RR2 | — | open | iCloud key-value store on watchOS and inside a widget extension is unverified here. |
 | agent | RR4 | — | open | A new device writes default values over the real target before iCloud delivers it. |
@@ -114,4 +113,4 @@ Every open row in the register. Owner is the row's Owner column where the table 
 
 ---
 
-26 open register rows.
+25 open register rows.
