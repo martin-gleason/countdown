@@ -1,0 +1,14 @@
+#!/bin/sh
+# Created: 2026-11-08 20:59 -06:00 · Edited: 2026-11-08 21:00 -06:00
+# pre-commit (`C0`): the gates run at commit time, so they cannot be satisfied in advance
+# and then edited past. Document gates, then stamps and the frozen spec on the staged files. `C1` adds the
+# Swift harness here. Install once: git config core.hooksPath .githooks
+root=$(git rev-parse --show-toplevel) || exit 1
+cd "$root" || exit 1
+if ! git diff --quiet; then
+    printf '  note  unstaged changes present; the document gates read the working tree.\n'
+fi
+fail=0
+sh scripts/check_docs.sh || fail=1
+python3 scripts/check_stamps.py || fail=1
+[ "$fail" -eq 0 ] || { printf '\nrefused. Fix, or --no-verify deliberately.\n'; exit 1; }
