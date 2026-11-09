@@ -1,4 +1,4 @@
-# Created: 2026-11-08 21:11 -06:00 · Edited: 2026-11-08 21:25 -06:00
+# Created: 2026-11-08 21:11 -06:00 · Edited: 2026-11-08 21:28 -06:00
 """Requirement trace, register hook H6 (`C1`): drift, checked in both directions.
 
     python3 scripts/check_trace.py [--base REV] [--scratch-path DIR]
@@ -148,8 +148,15 @@ def listed_tests(scratch: str | None) -> list[str] | None:
     r = subprocess.run(cmd, capture_output=True, text=True)
     if r.returncode != 0:
         return None
-    return [re.sub(r"\(.*$", "", line.rsplit("/", 1)[-1])
-            for line in r.stdout.splitlines() if "/" in line]
+    # `Module.Suite/func(args)` for a test in a type; `Module.func()` for a free function.
+    names = []
+    for line in r.stdout.splitlines():
+        line = line.strip()
+        if not re.match(r"^\w+\.\S+$", line):
+            continue
+        last = line.rsplit("/", 1)[-1] if "/" in line else line.split(".", 1)[1]
+        names.append(re.sub(r"\(.*$", "", last))
+    return names
 
 
 def requirements() -> set[str]:
