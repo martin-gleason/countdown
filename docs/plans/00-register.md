@@ -1,6 +1,6 @@
 # Register — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:00 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:01 -06:00
 
 Every register for this project, one `##` each. Baseline: [countdown-widget-spec.md](../specs/countdown-widget-spec.md) (frozen 2026-11-08). **Where this register and the spec disagree, the register wins.** First-gate plan: [mvp.md](mvp.md). Open questions: [2026-11-08 spec review](../handoffs/2026-11-08-spec-review.md).
 
@@ -42,7 +42,7 @@ Immutable once ratified. Supersede, never edit. A rejected row stays, struck thr
 
 | ID | Chore | P | Status | Owner | Depends on | Plan |
 |---|---|---|---|---|---|---|
-| C0 | Scaffold: git, vendored conventions (turing-review `9615341`), CLAUDE.md, reviewer agent, status page, private GitHub repo | P0 | open | agent | `G1` | [mvp](mvp.md#c0) |
+| C0 | Scaffold: git, vendored conventions (turing-review `9615341`), CLAUDE.md, reviewer agent, status page, private GitHub repo | P0 | built 2026-11-08 — T1–T3 done on branch `C0/scaffold`; T4 (create and push the GitHub repo) waits on Marty's permission | agent | `G1` | [mvp](mvp.md#c0) |
 | C1 | Build the Swift harness (run · count · floor · mutate · precommit) | P0 | open | agent | `C0` | [C1](C1.md) |
 | C2 | CountdownCore package: snapshot math, style decoder, timeline builder, tests | P0 | open | agent | `C1` | [mvp](mvp.md#c2) |
 | C3 | Install signed builds on every device, configure once, set the yearly reinstall reminder (`D17`), confirm still running after 8 days | P1 | open | human | `F3` | at `G5` |

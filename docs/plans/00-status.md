@@ -40,7 +40,7 @@ Counted from the register itself. A register with no rows still gets a line.
 | Agent items (`A`) | 3 | 3 | 0 | 0 |
 | Hooks (`H`) | 8 | 3 | 0 | 5 |
 | Mutations (`M`) | 8 | 8 | 0 | 0 |
-| Chores (`C`) | 4 | 4 | 0 | 0 |
+| Chores (`C`) | 4 | 3 | 0 | 1 |
 | Other (F) (`F`) | 3 | 3 | 0 | 0 |
 | Gates (`G`) | 6 | 5 | 0 | 1 |
 
@@ -56,7 +56,8 @@ Counted from the register itself. A register with no rows still gets a line.
 | `H` | built | 5 |
 | `H` | not built | 3 |
 | `M` | proposed | 8 |
-| `C` | open | 4 |
+| `C` | built | 1 |
+| `C` | open | 3 |
 | `F` | not built | 3 |
 | `G` | done | 1 |
 | `G` | open | 5 |
@@ -82,7 +83,6 @@ Every open row in the register. Owner is the row's Owner column where the table 
 
 | Owner | ID | P | Status | Item |
 |---|---|---|---|---|
-| agent | C0 | P0 | open | Scaffold: git, vendored conventions (turing-review 9615341), CLAUDE.md, reviewer agent, status page, private GitHub repo… |
 | agent | C1 | P0 | open | Build the Swift harness (run · count · floor · mutate · precommit) |
 | agent | C2 | P0 | open | CountdownCore package: snapshot math, style decoder, timeline builder, tests |
 | agent | RR1 | — | open | A widget sees a target change only after its host app runs on that device, and the Watch app may rarely run. |
@@ -122,4 +122,4 @@ Every open row in the register. Owner is the row's Owner column where the table 
 
 ---
 
-37 open register rows.
+36 open register rows.
