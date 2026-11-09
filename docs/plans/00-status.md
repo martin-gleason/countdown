@@ -37,7 +37,7 @@ Counted from the register itself. A register with no rows still gets a line.
 | Decisions (`D`) | 17 | 0 | 0 | 17 |
 | Risks (`RR`) | 8 | 8 | 0 | 0 |
 | Owner items (`O`) | 8 | 3 | 0 | 5 |
-| Agent items (`A`) | 3 | 3 | 0 | 0 |
+| Agent items (`A`) | 4 | 4 | 0 | 0 |
 | Hooks (`H`) | 8 | 3 | 0 | 5 |
 | Mutations (`M`) | 8 | 8 | 0 | 0 |
 | Chores (`C`) | 4 | 3 | 0 | 1 |
@@ -52,7 +52,7 @@ Counted from the register itself. A register with no rows still gets a line.
 | `RR` | open | 8 |
 | `O` | done | 5 |
 | `O` | open | 3 |
-| `A` | open | 3 |
+| `A` | open | 4 |
 | `H` | built | 5 |
 | `H` | not built | 3 |
 | `M` | proposed | 8 |
@@ -71,7 +71,7 @@ Counted from the register itself. A register with no rows still gets a line.
 | H1 | swift test plus the count floor, run on the staged tree | pre-commit | test gate | not built |
 | H2 | swift test and an xcodebuild compile check on a macOS runner | CI | test gate | not built |
 | H3 | Commit grammar <type>(<F/C id>): …, with no register ID | commit-msg | ID grammar | built |
-| H4 | The status page regenerates clean | pre-commit + CI | the status page stays current | built |
+| H4 | The status page regenerates clean | pre-commit (CI joins in `C1`) | the status page stays current | built |
 | H5 | Every staged file carries a current Created · Edited stamp | pre-commit | the stamp rule (upstream `D76`) | built |
 | H6 | Every test cites an FR or a D, and every FR has a test | CI | drift, both directions | not built |
 | H7 | A doc losing over 60% of its lines needs Rewrites: <path> — <why> | commit-msg | overwrite by shell redirect | built |
@@ -100,6 +100,7 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | unassigned | A1 | P2 | open | Upstream stamp.py exempts neither vendored scripts nor a frozen spec. Here scripts/checkstamps.py covers both, but the s… |
 | unassigned | A2 | P1 | open | pre-commit reads the working tree, not the staged tree. In C1, run it on an exported index, as MusicShare does. |
 | unassigned | A3 | P2 | open | Upstream genstatus.py treats an unknown flag such as --help as a request to write. Report it in turing-review. |
+| unassigned | A4 | P2 | open | Upstream stamp.py --check compares Edited with the last commit at minute resolution, so an edit within the same minute p… |
 | unassigned | F1 | — | not built | Lock Screen and Mac desktop widgets: Hours, Stacked and Days styles, the host app, iCloud sync |
 | unassigned | F2 | — | not built | Apple Watch complications |
 | unassigned | F3 | — | not built | Sentence, Ring, Bar and Milestone styles, accent colors, the count-up state, Dynamic Type, VoiceOver |
@@ -122,4 +123,4 @@ Every open row in the register. Owner is the row's Owner column where the table 
 
 ---
 
-36 open register rows.
+37 open register rows.

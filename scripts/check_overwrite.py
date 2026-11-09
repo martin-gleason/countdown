@@ -1,8 +1,8 @@
-# Created: 2026-11-08 20:59 -06:00 · Edited: 2026-11-08 21:00 -06:00
+# Created: 2026-11-08 20:59 -06:00 · Edited: 2026-11-08 21:14 -06:00
 """Overwrite guard, register hook H7 (`C0`).
 
 A staged markdown file that loses more than 60% of the lines it had at HEAD (or is
-deleted) must be declared in the commit message with a line:
+deleted; a rename is measured against its old content, so a pure move passes) must be declared in the commit message with a line:
 
     Rewrites: <path> — <why>
 
@@ -37,8 +37,16 @@ def offenders() -> list[tuple[str, int, int]]:
     if not git("rev-parse", "--verify", "-q", "HEAD").strip():
         return []                     # first commit: nothing existed to overwrite
     out = []
-    for row in git("diff", "--cached", "--numstat", "--no-renames").splitlines():
-        added, removed, path = row.split("\t", 2)
+    # -z with rename detection: a rename is `added\tremoved\t\0old\0new\0` and is measured
+    # against the old path, so a pure move (archiving a plan) loses nothing.
+    fields = git("diff", "--cached", "--numstat", "-M", "-z").split("\0")
+    i = 0
+    while i < len(fields) - 1:
+        added, removed, path = fields[i].split("\t", 2)
+        if path == "":                       # rename: the next two fields are old, new
+            path, i = fields[i + 1], i + 3
+        else:
+            i += 1
         if not path.endswith(".md") or removed == "-":
             continue
         before = head_lines(path)

@@ -1,6 +1,6 @@
 # Register — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:08 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:14 -06:00
 
 Every register for this project, one `##` each. Baseline: [countdown-widget-spec.md](../specs/countdown-widget-spec.md) (frozen 2026-11-08). **Where this register and the spec disagree, the register wins.** First-gate plan: [mvp.md](mvp.md). Open questions: [2026-11-08 spec review](../handoffs/2026-11-08-spec-review.md).
 
@@ -93,17 +93,18 @@ A gate is an event: the owner's explicit yes. It is recorded here when it happen
 | A1 | Upstream `stamp.py` exempts neither vendored scripts nor a frozen spec. Here `scripts/check_stamps.py` covers both, but the spec's first commit went in before it existed, with the waiver in its body. Propose the exemptions in turing-review. | P2 | open |
 | A2 | `pre-commit` reads the working tree, not the staged tree. In `C1`, run it on an exported index, as MusicShare does. | P1 | open |
 | A3 | Upstream `gen_status.py` treats an unknown flag such as `--help` as a request to write. Report it in turing-review. | P2 | open |
+| A4 | Upstream `stamp.py --check` compares Edited with the last commit at minute resolution, so an edit within the same minute passes unstamped. `check_stamps.py` closes it here. Propose the fix in turing-review. | P2 | open |
 
 ## Hooks (H)
 
-Plan-local labels. Never in a commit, branch or PR title.
+Plan-local labels. Never in a commit, branch or PR title. The vendored scripts print upstream numbers: upstream `H1` is `H4` here, upstream `H3` is `H3`, and upstream `H15` is `H5`.
 
 | ID | Hook | Surface | Protects | Status |
 |---|---|---|---|---|
 | H1 | `swift test` plus the count floor, run on the staged tree | pre-commit | test gate | not built (`C1`) |
 | H2 | `swift test` and an `xcodebuild` compile check on a macOS runner | CI | test gate | not built (`C1`, `RR7`) |
 | H3 | Commit grammar `<type>(<F/C id>): …`, with no register ID | commit-msg | ID grammar | built 2026-11-08 (`C0`) |
-| H4 | The status page regenerates clean | pre-commit + CI | the status page stays current | built 2026-11-08 (`C0`) |
+| H4 | The status page regenerates clean | pre-commit (CI joins in `C1`) | the status page stays current | built 2026-11-08 (`C0`) |
 | H5 | Every staged file carries a current Created · Edited stamp | pre-commit | the stamp rule (upstream `D76`) | built 2026-11-08 (`C0`) |
 | H6 | Every test cites an `FR` or a `D`, and every `FR` has a test | CI | drift, both directions | not built (`C1`) |
 | H7 | A doc losing over 60% of its lines needs `Rewrites: <path> — <why>` | commit-msg | overwrite by shell redirect | built 2026-11-08 (`C0`) |

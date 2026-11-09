@@ -1,6 +1,6 @@
 # Spec review and G1 questions
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:00 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:14 -06:00
 
 A review of [countdown-widget-spec.md](../specs/countdown-widget-spec.md) by Turing, before `G1`. Findings that need a decision are rows in the [register](../plans/00-register.md). This file holds the evidence and the five questions. **Answer under each question. An unanswered question stays open; it is never taken as a no.**
 
@@ -29,7 +29,7 @@ Also seen: there are 31,915 hours left now, against the spec's illustrative 34,8
 
 ## Q1 — Requirement IDs and Stack (`O1`) · blocks `C2`
 
-The spec has no `FR`/`NFR` IDs and no `## Stack`, so the drift hook (`H6`) and the harness check (`H14`) have nothing to read. The spec has not been committed yet.
+The spec has no `FR`/`NFR` IDs and no `## Stack`, so the drift hook (`H6`) and the harness check (upstream `H14`) have nothing to read. The spec has not been committed yet.
 
 - **A (recommended):** before the first commit, add the IDs and the Stack block below to the spec once, changing no other words. The edit lands in the same commit that first records the spec.
 - **B:** keep the spec byte-identical and add `docs/specs/requirements.md` as a second frozen baseline.

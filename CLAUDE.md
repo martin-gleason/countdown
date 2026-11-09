@@ -1,6 +1,6 @@
 # CLAUDE.md — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:00 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:14 -06:00
 
 One tap-free number that answers "how long until then?" everywhere you look: a countdown widget for the iPhone Lock Screen, the Mac desktop and the Apple Watch.
 
@@ -69,7 +69,7 @@ Install once: `git config core.hooksPath .githooks`. Each one was proved by brea
 
 | Hook | Surface | Protects |
 |---|---|---|
-| `scripts/check_docs.sh`: vendored pin, register, citations, status page | pre-commit (+ CI in `C1`) | the documents stay true |
+| `scripts/check_docs.sh`: vendored pins, register, every cited ID defined here, status page | pre-commit (+ CI in `C1`) | the documents stay true |
 | `scripts/check_stamps.py`: Created · Edited on every staged file; refuses any change to `docs/specs/` | pre-commit | the stamp rule; the frozen spec |
 | `scripts/check_commit_msg.py`: commit grammar, no register IDs | commit-msg | the two-tier IDs |
 | `scripts/check_overwrite.py`: a >60% doc cut needs `Rewrites:` | commit-msg | overwrite by shell redirect |
