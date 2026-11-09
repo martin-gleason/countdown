@@ -1,6 +1,6 @@
 # CLAUDE.md — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:14 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-09 07:33 -06:00
 
 One tap-free number that answers "how long until then?" everywhere you look: a countdown widget for the iPhone Lock Screen, the Mac desktop and the Apple Watch.
 
@@ -24,7 +24,7 @@ One tap-free number that answers "how long until then?" everywhere you look: a c
 
 ## Non-negotiable
 
-- **Scope is the MVP units in the register (`F1`–`F3`, `C0`–`C3`).** Anything else is a future milestone: do not build it, stub it or prepare for it. Open a `D<n>` and stop.
+- **Scope is the MVP units in the register (`F1`–`F3`, `C0`–`C4`).** Anything else is a future milestone: do not build it, stub it or prepare for it. Open a `D<n>` and stop.
 - **The agent never edits the spec.** Propose a `D<n>`; Marty ratifies.
 - **No third-party dependencies.** Apple frameworks only.
 - **Widgets read the App Group only.** iCloud is written by the host apps.
