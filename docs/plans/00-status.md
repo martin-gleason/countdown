@@ -17,8 +17,8 @@ Named, never numbered (`D2`). **No source read here marks a milestone as the cur
 
 | Milestone | Decisions landing here | Units |
 |---|---|---|
-| MVP | 18 | — |
-| — | 0 | C1 |
+| MVP | 19 | — |
+| — | 0 | C1, F1 |
 
 ## Features and chores
 
@@ -27,6 +27,7 @@ Status is what the unit's own plan header declares. What has landed in git is de
 | ID | Kind | Status | Milestone | P | Owner | Plan | Tasks |
 |---|---|---|---|---|---|---|---|
 | C1 | chore | open | — | P0 | agent | `docs/plans/C1.md` | 0 planned |
+| F1 | feature | — | — | — | — | `docs/plans/F1.md` | 0 planned |
 
 ## Registers
 
@@ -34,35 +35,36 @@ Counted from the register itself. A register with no rows still gets a line.
 
 | Register | Rows | Open | Unknown | Closed |
 |---|---|---|---|---|
-| Decisions (`D`) | 18 | 1 | 0 | 17 |
-| Risks (`RR`) | 8 | 8 | 0 | 0 |
-| Owner items (`O`) | 8 | 3 | 0 | 5 |
+| Decisions (`D`) | 19 | 1 | 0 | 18 |
+| Risks (`RR`) | 9 | 9 | 0 | 0 |
+| Owner items (`O`) | 8 | 2 | 0 | 6 |
 | Agent items (`A`) | 4 | 3 | 0 | 1 |
 | Hooks (`H`) | 8 | 0 | 0 | 8 |
-| Mutations (`M`) | 15 | 1 | 0 | 14 |
+| Mutations (`M`) | 19 | 5 | 0 | 14 |
 | Chores (`C`) | 4 | 1 | 0 | 3 |
 | Other (F) (`F`) | 3 | 3 | 0 | 0 |
-| Gates (`G`) | 6 | 5 | 0 | 1 |
+| Gates (`G`) | 6 | 4 | 0 | 2 |
 
 ### By status
 
 | Register | Status | Count |
 |---|---|---|
 | `D` | proposed | 1 |
-| `D` | ratified | 17 |
-| `RR` | open | 8 |
-| `O` | done | 5 |
-| `O` | open | 3 |
+| `D` | ratified | 18 |
+| `RR` | open | 9 |
+| `O` | done | 6 |
+| `O` | open | 2 |
 | `A` | done | 1 |
 | `A` | open | 3 |
 | `H` | built | 8 |
 | `M` | killed | 14 |
-| `M` | proposed | 1 |
-| `C` | built | 3 |
+| `M` | proposed | 5 |
+| `C` | built | 1 |
+| `C` | done | 2 |
 | `C` | open | 1 |
 | `F` | not built | 3 |
-| `G` | done | 1 |
-| `G` | open | 5 |
+| `G` | done | 2 |
+| `G` | open | 4 |
 
 ## Hooks
 
@@ -92,9 +94,9 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | agent | RR6 | — | open | WidgetKit and Liquid Glass APIs differ between the iOS 26 floor and the Xcode 27.2 SDK in use. |
 | agent | RR7 | — | open | CI's macos-26 runner has Xcode 26.6 and Swift 6.3.3 (run on PR #2, 2026-11-08); local is Xcode 27.2 and Swift 6.4.2. Cod… |
 | agent | RR8 | — | open | A malformed style JSON shows only at runtime, as a blank widget. |
+| agent | RR9 | — | open | The Xcode project file is written by hand (D14 rules out generators), and Xcode may refuse it or rewrite it on first ope… |
 | human | C3 | P1 | open | Install signed builds on every device, configure once, set the yearly reinstall reminder (D17), confirm still running af… |
-| owner | D18 | — | proposed | Amends D4: a timeline entry sits one second after every instant a shown value changes — each target + k·3600 s, each loc… |
-| owner | O6 | P1 | open | Confirm the paid Apple Developer membership is active and give the Team ID for the App Group and iCloud identifiers. |
+| owner | D19 | — | proposed | The repo is public, amending D11. It was found public on 2026-11-09 after Marty added a ruleset; GitHub's free plan prot… |
 | owner | O7 | P1 | open | After C0, turn on branch protection for main: PR required, CI required, rebase-merge only. |
 | owner | O8 | P1 | open | Read CLAUDE.md, the reviewer and the vendored conventions, then run checkinstructions.py --acknowledge --date <day> in t… |
 | owner | RR3 | — | open | Signed builds expire: developer provisioning profiles last about a year (from memory, not checked), and a lapsed members… |
@@ -104,13 +106,16 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | unassigned | F1 | — | not built | Lock Screen and Mac desktop widgets: Hours, Stacked and Days styles, the host app, iCloud sync |
 | unassigned | F2 | — | not built | Apple Watch complications |
 | unassigned | F3 | — | not built | Sentence, Ring, Bar and Milestone styles, accent colors, the count-up state, Dynamic Type, VoiceOver |
-| unassigned | G2 | — | open | Core shape ratified: tests green, including the hour-boundary, leap-day and DST cases |
 | unassigned | G3 | — | open | F1 renders on iPhone and Mac in all three rendering modes; a target set on one appears on the other |
 | unassigned | G4 | — | open | F2 complication is live on a watch face |
 | unassigned | G5 | — | open | F3 passes at the largest Dynamic Type size and under VoiceOver |
 | unassigned | G6 | — | open | MVP: still running on every device after 8 days |
 | unassigned | M8 | — | proposed | A missing iCloud value replaced by the default and written back (D5) |
+| unassigned | M17 | — | proposed | The store's merge keeps the older record (D5) |
+| unassigned | M18 | — | proposed | Hours shown without grouping (34872) |
+| unassigned | M19 | — | proposed | The target date shown in the current zone, not its entry zone (D6) |
+| unassigned | M20 | — | proposed | "Device default" draws Hours instead of the device's chosen style (D7) |
 
 ---
 
-25 open register rows.
+28 open register rows.
