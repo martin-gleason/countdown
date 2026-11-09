@@ -17,7 +17,7 @@ Named, never numbered (`D2`). **No source read here marks a milestone as the cur
 
 | Milestone | Decisions landing here | Units |
 |---|---|---|
-| MVP | 17 | — |
+| MVP | 18 | — |
 | — | 0 | C1 |
 
 ## Features and chores
@@ -34,12 +34,12 @@ Counted from the register itself. A register with no rows still gets a line.
 
 | Register | Rows | Open | Unknown | Closed |
 |---|---|---|---|---|
-| Decisions (`D`) | 17 | 0 | 0 | 17 |
+| Decisions (`D`) | 18 | 1 | 0 | 17 |
 | Risks (`RR`) | 8 | 8 | 0 | 0 |
 | Owner items (`O`) | 8 | 3 | 0 | 5 |
 | Agent items (`A`) | 4 | 3 | 0 | 1 |
 | Hooks (`H`) | 8 | 0 | 0 | 8 |
-| Mutations (`M`) | 8 | 7 | 0 | 1 |
+| Mutations (`M`) | 11 | 1 | 0 | 10 |
 | Chores (`C`) | 4 | 2 | 0 | 2 |
 | Other (F) (`F`) | 3 | 3 | 0 | 0 |
 | Gates (`G`) | 6 | 5 | 0 | 1 |
@@ -48,6 +48,7 @@ Counted from the register itself. A register with no rows still gets a line.
 
 | Register | Status | Count |
 |---|---|---|
+| `D` | proposed | 1 |
 | `D` | ratified | 17 |
 | `RR` | open | 8 |
 | `O` | done | 5 |
@@ -55,8 +56,8 @@ Counted from the register itself. A register with no rows still gets a line.
 | `A` | done | 1 |
 | `A` | open | 3 |
 | `H` | built | 8 |
-| `M` | killed | 1 |
-| `M` | proposed | 7 |
+| `M` | killed | 10 |
+| `M` | proposed | 1 |
 | `C` | built | 2 |
 | `C` | open | 2 |
 | `F` | not built | 3 |
@@ -93,6 +94,7 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | agent | RR7 | — | open | CI's macos-26 runner has Xcode 26.6 and Swift 6.3.3 (run on PR #2, 2026-11-08); local is Xcode 27.2 and Swift 6.4.2. Cod… |
 | agent | RR8 | — | open | A malformed style JSON shows only at runtime, as a blank widget. |
 | human | C3 | P1 | open | Install signed builds on every device, configure once, set the yearly reinstall reminder (D17), confirm still running af… |
+| owner | D18 | — | proposed | Amends D4: timeline entries fall one second after each target + k·3600 s, and every boundary instant belongs to the earl… |
 | owner | O6 | P1 | open | Confirm the paid Apple Developer membership is active and give the Team ID for the App Group and iCloud identifiers. |
 | owner | O7 | P1 | open | After C0, turn on branch protection for main: PR required, CI required, rebase-merge only. |
 | owner | O8 | P1 | open | Read CLAUDE.md, the reviewer and the vendored conventions, then run checkinstructions.py --acknowledge --date <day> in t… |
@@ -108,14 +110,8 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | unassigned | G4 | — | open | F2 complication is live on a watch face |
 | unassigned | G5 | — | open | F3 passes at the largest Dynamic Type size and under VoiceOver |
 | unassigned | G6 | — | open | MVP: still running on every device after 8 days |
-| unassigned | M2 | — | proposed | Y/M/D built from 86,400-second days |
-| unassigned | M3 | — | proposed | Timeline entries at the local top of the hour (D4) |
-| unassigned | M4 | — | proposed | Count-up after the target uses the countdown's sign or floor |
-| unassigned | M5 | — | proposed | A style fallback cycle is not detected |
-| unassigned | M6 | — | proposed | Ring/Bar progress not clamped to 0…1 |
-| unassigned | M7 | — | proposed | Days computed as seconds ÷ 86,400 |
 | unassigned | M8 | — | proposed | A missing iCloud value replaced by the default and written back (D5) |
 
 ---
 
-31 open register rows.
+26 open register rows.
