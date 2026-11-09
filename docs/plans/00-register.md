@@ -1,6 +1,6 @@
 # Register — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:16 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:27 -06:00
 
 Every register for this project, one `##` each. Baseline: [countdown-widget-spec.md](../specs/countdown-widget-spec.md) (frozen 2026-11-08). **Where this register and the spec disagree, the register wins.** First-gate plan: [mvp.md](mvp.md). Open questions: [2026-11-08 spec review](../handoffs/2026-11-08-spec-review.md).
 
@@ -70,7 +70,7 @@ A gate is an event: the owner's explicit yes. It is recorded here when it happen
 | RR4 | A new device writes default values over the real target before iCloud delivers it. | open | medium | high | `D5`, plus mutation `M8`. | agent |
 | RR5 | A five-digit Hours number on accessoryCircular, or Sentence on accessoryInline, does not fit at large type. | open | high | medium | Per-family fallback and abbreviation; checked at `G3` and `G5`. | agent |
 | RR6 | WidgetKit and Liquid Glass APIs differ between the iOS 26 floor and the Xcode 27.2 SDK in use. | open | medium | medium | Spec §3 check of Apple's docs as `F1-T1`. | agent |
-| RR7 | GitHub's macOS runners may not have Xcode 27 or Swift 6.4, so CI cannot build. **Unverified.** | open | medium | medium | `C1` checks the runner image first; the local pre-commit stays the gate meanwhile. | agent |
+| RR7 | CI's `macos-26` runner has Xcode 26.6 and Swift 6.3.3 (run on PR #2, 2026-11-08); local is Xcode 27.2 and Swift 6.4.2. Code using Swift 6.4 or the iOS 27 SDK would pass locally and fail CI. | open | medium | medium | Keep `swift-tools-version` at 6.2 and the iOS 26 floor (`NFR1`); CI prints its toolchain on every run. | agent |
 | RR8 | A malformed style JSON shows only at runtime, as a blank widget. | open | medium | medium | `D8`: every bundled file is decoded in tests; mutation `M5`. | agent |
 
 ## Owner items (O)
@@ -101,7 +101,7 @@ Plan-local labels. Never in a commit, branch or PR title. The vendored scripts p
 
 | ID | Hook | Surface | Protects | Status |
 |---|---|---|---|---|
-| H1 | `swift test` plus the count floor, run on the staged tree | pre-commit | test gate | built 2026-11-08 (`C1`) |
+| H1 | `scripts/test_gate.sh`: one `swift test` run that must exit 0, and a passing count at or above the floor, on the staged tree | pre-commit + CI | test gate | built 2026-11-08 (`C1`) |
 | H2 | Document gates, the trace, `swift test` and the floor on a `macos-26` runner; the `xcodebuild` compile check joins in `F1` | CI | test gate | built 2026-11-08 (`C1`); first run is the `C1` PR |
 | H3 | Commit grammar `<type>(<F/C id>): …`, with no register ID | commit-msg | ID grammar | built 2026-11-08 (`C0`) |
 | H4 | The status page regenerates clean | pre-commit + CI | the status page stays current | built 2026-11-08 (`C0`) |

@@ -1,4 +1,4 @@
-# Created: 2026-11-08 21:11 -06:00 · Edited: 2026-11-08 21:11 -06:00
+# Created: 2026-11-08 21:11 -06:00 · Edited: 2026-11-08 21:26 -06:00
 """Harness `mutate` (`C1`): apply each named mutation, confirm its test goes red, restore.
 
     python3 scripts/mutate.py            # run every mutation in tests/mutations.json
@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import json
 import re
+import signal
 import subprocess
 import sys
 from datetime import date
@@ -29,13 +30,17 @@ ROOT = Path(__file__).resolve().parent.parent
 SPEC = ROOT / "tests" / "mutations.json"
 REGISTER = ROOT / "docs" / "plans" / "00-register.md"
 RAN = re.compile(r"Test run with (\d+) tests? in \d+ suites? (passed|failed)")
+TIMEOUT = 600   # seconds for one filtered run, build included; a timeout is never a kill
 
 
 def run_one_test(caught_by: str) -> tuple[int, str]:
     """(tests executed, 'passed'|'failed'|'none') for a --filter run of one test."""
-    r = subprocess.run(["swift", "test", "--package-path", str(ROOT / "CountdownCore"),
-                        "--filter", re.escape(caught_by)],
-                       capture_output=True, text=True)
+    try:
+        r = subprocess.run(["swift", "test", "--package-path", str(ROOT / "CountdownCore"),
+                            "--filter", re.escape(caught_by)],
+                           capture_output=True, text=True, timeout=TIMEOUT)
+    except subprocess.TimeoutExpired:
+        return 0, "timed out"
     m = None
     for m in RAN.finditer(r.stdout + r.stderr):
         pass
@@ -78,7 +83,15 @@ def write_register(results: dict[str, str]) -> None:
     REGISTER.write_text(text, encoding="utf-8")
 
 
+def _exit_on_signal(signum, _frame):
+    # SystemExit unwinds through mutate()'s `finally`, so the source is restored. The
+    # default SIGTERM/SIGHUP action kills the process with the mutation still applied.
+    raise SystemExit(128 + signum)
+
+
 def main(argv: list[str]) -> int:
+    for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT):
+        signal.signal(sig, _exit_on_signal)
     write = "--write" in argv
     wanted = [a for a in argv[1:] if not a.startswith("-")]
     mutations = json.loads(SPEC.read_text(encoding="utf-8"))
@@ -86,6 +99,10 @@ def main(argv: list[str]) -> int:
     missing = [m["id"] for m in mutations if not re.search(rf"^\| {m['id']} \|", register, re.M)]
     if missing:
         print(f"mutate: no register row for {', '.join(missing)}")
+        return 1
+    unknown = sorted(set(wanted) - {m["id"] for m in mutations})
+    if unknown:
+        print(f"mutate: no mutation named {', '.join(unknown)} in tests/mutations.json")
         return 1
     chosen = [m for m in mutations if not wanted or m["id"] in wanted]
     if not chosen:

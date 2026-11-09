@@ -1,5 +1,5 @@
 #!/bin/sh
-# Created: 2026-11-08 21:12 -06:00 · Edited: 2026-11-08 21:12 -06:00
+# Created: 2026-11-08 21:12 -06:00 · Edited: 2026-11-08 21:26 -06:00
 # Harness `precommit` (`C0`, `C1`): the gates run at commit time on exactly the tree being
 # committed, so they cannot be satisfied in advance and then edited past. The index is
 # exported to a temporary directory and the document gates, the trace and the tests run
@@ -13,20 +13,14 @@ trap 'exit 1' HUP INT TERM
 git checkout-index -a --prefix="$tmp/" || exit 1
 fail=0
 (cd "$root" && python3 scripts/check_stamps.py) || fail=1
-for f in scripts/check_docs.sh scripts/check_trace.py scripts/run_tests.sh scripts/count_tests.sh tests/TEST_FLOOR; do
+for f in scripts/check_docs.sh scripts/check_trace.py scripts/test_gate.sh tests/TEST_FLOOR; do
     [ -f "$tmp/$f" ] || { echo "pre-commit: $f is not in the staged tree" >&2; exit 1; }
 done
-# The export has no .git; the docs gates and the trace read files only, but the trace's
-# ratchet compares with HEAD, so it is pointed at the real repository's git.
+# The export has no .git. The trace's ratchet compares with HEAD, so it reads the real
+# repository's git. The build cache lives in the repository, so commits do not rebuild
+# from nothing; the sources it builds are the export's.
+cache="$root/CountdownCore/.build"
 GIT_DIR="$root/.git" sh "$tmp/scripts/check_docs.sh" || fail=1
-GIT_DIR="$root/.git" python3 "$tmp/scripts/check_trace.py" || fail=1
-# The build cache lives in the repository so each commit does not rebuild from nothing.
-count=$(sh "$tmp/scripts/count_tests.sh" "$root/CountdownCore/.build" | tail -1)
-floor=$(cat "$tmp/tests/TEST_FLOOR")
-if [ "${count:-0}" -lt "$floor" ]; then
-    printf '  FAIL  test floor: %s passed, floor is %s (a failing or shrinking suite)\n' "${count:-0}" "$floor"
-    fail=1
-else
-    printf '  ok    test floor (%s >= %s)\n' "$count" "$floor"
-fi
+GIT_DIR="$root/.git" python3 "$tmp/scripts/check_trace.py" --scratch-path "$cache" || fail=1
+sh "$tmp/scripts/test_gate.sh" "$cache" || fail=1
 [ "$fail" -eq 0 ] || { printf '\nrefused. Fix, or --no-verify deliberately.\n'; exit 1; }
