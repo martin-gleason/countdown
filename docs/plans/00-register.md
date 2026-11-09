@@ -1,6 +1,6 @@
 # Register — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-09 07:33 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-09 07:39 -06:00
 
 Every register for this project, one `##` each. Baseline: [countdown-widget-spec.md](../specs/countdown-widget-spec.md) (frozen 2026-11-08). **Where this register and the spec disagree, the register wins.** First-gate plan: [mvp.md](mvp.md). Open questions: [2026-11-08 spec review](../handoffs/2026-11-08-spec-review.md).
 
@@ -76,7 +76,7 @@ A gate is an event: the owner's explicit yes. It is recorded here when it happen
 | RR6 | WidgetKit and Liquid Glass APIs differ between the iOS 26 floor and the Xcode 27.2 SDK in use. | open | medium | medium | Spec §3 check of Apple's docs as `F1-T1`. | agent |
 | RR7 | CI's `macos-26` runner has Xcode 26.6 and Swift 6.3.3 (run on PR #2, 2026-11-08); local is Xcode 27.2 and Swift 6.4.2. Code using Swift 6.4 or the iOS 27 SDK would pass locally and fail CI. | open | medium | medium | Keep `swift-tools-version` at 6.2 and the iOS 26 floor (`NFR1`); CI prints its toolchain on every run. | agent |
 | RR8 | A malformed style JSON shows only at runtime, as a blank widget. | open | medium | medium | `D8`: every bundled file is decoded in tests; mutation `M5`. | agent |
-| RR9 | The Xcode project file is written by hand (`D14` rules out generators), and Xcode may refuse it or rewrite it on first open. | open | medium | low | `xcodebuild build` in CI from `F1-T1`; Marty's first open in Xcode is part of that task's checkpoint. | agent |
+| RR9 | The Xcode project file is written by hand (`D14` rules out generators), and Xcode may refuse it or rewrite it on first open. | open — `xcodebuild` accepts it on Xcode 27.2 (2026-11-09); CI's Xcode 26.6 and Marty's first open still to show | medium | low | `xcodebuild build` in CI from `F1-T1`; Marty's first open in Xcode is part of that task's checkpoint. | agent |
 
 ## Owner items (O)
 
@@ -107,7 +107,7 @@ Plan-local labels. Never in a commit, branch or PR title. The vendored scripts p
 | ID | Hook | Surface | Protects | Status |
 |---|---|---|---|---|
 | H1 | `scripts/test_gate.sh`: one `swift test` run that must exit 0, and a passing count at or above the floor, on the staged tree | pre-commit + CI | test gate | built 2026-11-08 (`C1`) |
-| H2 | Document gates, the trace, `swift test` and the floor on a `macos-26` runner; the `xcodebuild` compile check joins in `F1` | CI | test gate | built 2026-11-08 (`C1`); first run is the `C1` PR |
+| H2 | Document gates, the trace, `swift test` and the floor on a `macos-26` runner; and `scripts/build_apps.sh`, an unsigned `xcodebuild` of both targets for the iOS Simulator and macOS | CI | test gate | built 2026-11-08 (`C1`); compile check added 2026-11-09 (`F1-T1`), proved by breaking a macOS-only line |
 | H3 | Commit grammar `<type>(<F/C id>): …`, with no register ID | commit-msg | ID grammar | built 2026-11-08 (`C0`) |
 | H4 | The status page regenerates clean | pre-commit + CI | the status page stays current | built 2026-11-08 (`C0`) |
 | H5 | Every staged file carries a current Created · Edited stamp | pre-commit | the stamp rule (upstream `D76`) | built 2026-11-08 (`C0`) |

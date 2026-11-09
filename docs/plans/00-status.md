@@ -72,7 +72,7 @@ Counted from the register itself. A register with no rows still gets a line.
 | ID | Hook | Surface | Protects | Status |
 |---|---|---|---|---|
 | H1 | scripts/testgate.sh: one swift test run that must exit 0, and a passing count at or above the floor, on the staged tree | pre-commit + CI | test gate | built |
-| H2 | Document gates, the trace, swift test and the floor on a macos-26 runner; the xcodebuild compile check joins in F1 | CI | test gate | built |
+| H2 | Document gates, the trace, swift test and the floor on a macos-26 runner; and scripts/buildapps.sh, an unsigned xcodebui | CI | test gate | built |
 | H3 | Commit grammar <type>(<F/C id>): …, with no register ID | commit-msg | ID grammar | built |
 | H4 | The status page regenerates clean | pre-commit + CI | the status page stays current | built |
 | H5 | Every staged file carries a current Created · Edited stamp | pre-commit | the stamp rule (upstream `D76`) | built |

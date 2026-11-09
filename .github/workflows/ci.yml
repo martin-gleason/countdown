@@ -1,4 +1,4 @@
-# Created: 2026-11-08 21:12 -06:00 · Edited: 2026-11-08 21:26 -06:00
+# Created: 2026-11-08 21:12 -06:00 · Edited: 2026-11-09 07:38 -06:00
 # CI (`C1`): the document gates, the requirement trace and the test gate, on a clean macOS
 # runner. The stamp and frozen-spec checks (`H5`, `H8`) read the staged index, so they run in
 # the pre-commit hook only.
@@ -29,3 +29,5 @@ jobs:
           python3 scripts/check_trace.py --base "$base"
       - name: Tests and floor
         run: sh scripts/test_gate.sh
+      - name: App and widget compile
+        run: sh scripts/build_apps.sh
