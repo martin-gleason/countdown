@@ -1,4 +1,4 @@
-// Created: 2026-11-08 21:19 -06:00 · Edited: 2026-11-08 21:19 -06:00
+// Created: 2026-11-08 21:19 -06:00 · Edited: 2026-11-08 21:44 -06:00
 import Foundation
 
 /// What a widget shows at one instant (`FR8`, settled by `D16`).
@@ -25,11 +25,12 @@ public struct YearsMonthsDays: Equatable, Sendable {
 
 /// Everything a style needs to draw the countdown at `date`. No UI (`C2`).
 ///
-/// **A boundary instant belongs to the earlier value.** Every value changes just *after* a
-/// whole hour from the target: at exactly target − 1 h the count reads 1, at exactly the
-/// target it reads "< 1", and at exactly target + 1 h it reads "Now". The floored count
-/// (`FR6`) and Calendar components already behave this way; the phase rules are written to
-/// match, so a timeline entry one second after each boundary (`D18`) is always current.
+/// **The phase changes just after each whole hour from the target**: at exactly target − 1 h
+/// the count reads 1, at exactly the target it reads "< 1", and at exactly target + 1 h it
+/// reads "Now", matching the floored count (`FR6`). Days and Y/M/D come from Calendar
+/// components and change where Calendar says, which can be at the instant itself (count-up
+/// Days at exactly one day after the target) or at local midnight. Timeline entries sit one
+/// second after every change (`D18`), so no instant's convention is ever what a widget shows.
 public struct CountdownSnapshot: Equatable, Sendable {
     public let date: Date
     public let phase: CountdownPhase

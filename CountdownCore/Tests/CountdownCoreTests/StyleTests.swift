@@ -1,4 +1,4 @@
-// Created: 2026-11-08 21:20 -06:00 · Edited: 2026-11-08 21:20 -06:00
+// Created: 2026-11-08 21:20 -06:00 · Edited: 2026-11-08 21:44 -06:00
 import Foundation
 import Testing
 @testable import CountdownCore
@@ -30,12 +30,31 @@ struct StyleTests {
         #expect(Set(lib.styles.keys) == ["hours", "stacked", "days"])
     }
 
-    @Test("FR10: the bundled Hours matches the compiled-in default")
+    @Test("FR10: the bundled Hours matches the compiled-in default, field for field")
     func hoursIsDefault() throws {
         let bundled = try #require(StyleLibrary.bundled.styles["hours"])
-        #expect(bundled.unit == CountdownStyle.builtInHours.unit)
-        #expect(bundled.arrangement == CountdownStyle.builtInHours.arrangement)
-        #expect(bundled.typography == CountdownStyle.builtInHours.typography)
+        #expect(bundled == CountdownStyle.builtInHours)
+    }
+
+    @Test("FR9: a misspelt field at any level is refused, not ignored")
+    func misspeltFieldsRefused() {
+        let good = #"{"displayName":"x","unit":"hours","arrangement":"stacked","typography":{"textStyle":"title","weight":"bold","rounded":true,"monospacedDigits":true},"accentRole":"number","numberFormat":{"grouping":true,"abbreviate":false}"#
+        #expect(throws: (any Error).self) { try Self.decode(good + #","familes":{}}"#) }
+        #expect(throws: (any Error).self) { try Self.decode(good + #","families":{"accessoryCircular":{"fallbak":"days"}}}"#) }
+        #expect(throws: (any Error).self) { try Self.decode(good.replacingOccurrences(of: #""rounded":true"#, with: #""rounded":true,"italic":true"#) + "}") }
+        #expect(throws: (any Error).self) { try Self.decode(good.replacingOccurrences(of: #""abbreviate":false"#, with: #""abbreviate":false,"short":1"#) + "}") }
+        #expect(throws: (any Error).self) { try Self.decode(good + #","families":{"accessoryInline":{"typography":{"textStyle":"body","weight":"bold","rounded":true,"monospacedDigits":true,"size":9}}}}"#) }
+        #expect((try? Self.decode(good + #","families":{"accessoryInline":{"fallback":"hours"}}}"#)) != nil)
+    }
+
+    @Test("FR9: an unknown name or a cycle on accessoryInline still draws Hours at Inline size")
+    func failuresKeepFamilyTypography() {
+        let lib = StyleLibrary.bundled
+        #expect(lib.resolve("neon", for: .accessoryInline, hasStartDate: false).style.typography.textStyle == .body)
+        let cyc = Self.library(Self.style("ring", #","fallback":"ring""#, arrangement: "ring"))
+        let r = cyc.resolve("ring", for: .accessoryInline, hasStartDate: false)
+        #expect(r.issue == .cycle(["ring", "ring"]))
+        #expect(r.style.typography.textStyle == .body)
     }
 
     @Test("FR9: a file with an unknown unit, an unknown family or a missing field is refused")

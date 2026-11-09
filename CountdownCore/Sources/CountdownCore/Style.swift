@@ -1,4 +1,4 @@
-// Created: 2026-11-08 21:20 -06:00 · Edited: 2026-11-08 21:20 -06:00
+// Created: 2026-11-08 21:20 -06:00 · Edited: 2026-11-08 21:44 -06:00
 import Foundation
 
 /// The widget families this project draws (spec §2). Raw values match WidgetKit's names;
@@ -53,12 +53,13 @@ public struct CountdownStyle: Codable, Equatable, Sendable {
     public var fallback: String?
     public var families: [Family: FamilyRule]?
 
-    enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey, CaseIterable {
         case displayName, unit, arrangement, typography, accentRole, numberFormat
         case milestoneStep, fallback, families
     }
 
     public init(from decoder: Decoder) throws {
+        try Self.refuseUnknownKeys(decoder)
         let c = try decoder.container(keyedBy: CodingKeys.self)
         displayName = try c.decode(String.self, forKey: .displayName)
         unit = try c.decode(Unit.self, forKey: .unit)
@@ -102,6 +103,39 @@ public struct CountdownStyle: Codable, Equatable, Sendable {
         }
     }
 
+    /// A misspelt field (`"familes"`, `"fallbak"`) is an error, like an unknown family name,
+    /// never a silent no-op: the files are written by hand (spec §3).
+    static func refuseUnknownKeys(_ decoder: Decoder) throws {
+        let typography: Set<String> = ["textStyle", "weight", "rounded", "monospacedDigits"]
+        func check(_ c: KeyedDecodingContainer<AnyKey>, _ allowed: Set<String>, _ where_: String) throws {
+            let unknown = c.allKeys.map(\.stringValue).filter { !allowed.contains($0) }.sorted()
+            if !unknown.isEmpty {
+                throw DecodingError.dataCorrupted(.init(codingPath: c.codingPath,
+                    debugDescription: "unknown field(s) in \(where_): \(unknown.joined(separator: ", "))"))
+            }
+        }
+        let top = try decoder.container(keyedBy: AnyKey.self)
+        try check(top, Set(CodingKeys.allCases.map(\.stringValue)), "the style")
+        if top.contains(AnyKey("typography")) {
+            try check(top.nestedContainer(keyedBy: AnyKey.self, forKey: AnyKey("typography")), typography, "typography")
+        }
+        if top.contains(AnyKey("numberFormat")) {
+            try check(top.nestedContainer(keyedBy: AnyKey.self, forKey: AnyKey("numberFormat")),
+                      ["grouping", "abbreviate"], "numberFormat")
+        }
+        if top.contains(AnyKey("families")) {
+            let families = try top.nestedContainer(keyedBy: AnyKey.self, forKey: AnyKey("families"))
+            for key in families.allKeys {
+                let rule = try families.nestedContainer(keyedBy: AnyKey.self, forKey: key)
+                try check(rule, ["fallback", "typography"], "families.\(key.stringValue)")
+                if rule.contains(AnyKey("typography")) {
+                    try check(rule.nestedContainer(keyedBy: AnyKey.self, forKey: AnyKey("typography")),
+                              typography, "families.\(key.stringValue).typography")
+                }
+            }
+        }
+    }
+
     /// Ring and Bar draw progress, which needs a start date.
     public var needsStartDate: Bool { arrangement == .ring || arrangement == .bar }
 
@@ -110,11 +144,21 @@ public struct CountdownStyle: Codable, Equatable, Sendable {
         var s = try! JSONDecoder().decode(CountdownStyle.self, from: Data(#"""
         {"displayName": "Hours", "unit": "hours", "arrangement": "stacked",
          "typography": {"textStyle": "largeTitle", "weight": "semibold", "rounded": true, "monospacedDigits": true},
-         "accentRole": "number", "numberFormat": {"grouping": true, "abbreviate": false}}
+         "accentRole": "number", "numberFormat": {"grouping": true, "abbreviate": false},
+         "families": {"accessoryInline": {"typography": {"textStyle": "body", "weight": "semibold", "rounded": true, "monospacedDigits": true}}}}
         """#.utf8))
         s.name = "hours"
         return s
     }()
+}
+
+/// A coding key for any field name, used to list the fields a file actually has.
+struct AnyKey: CodingKey {
+    let stringValue: String
+    var intValue: Int? { nil }
+    init(_ s: String) { stringValue = s }
+    init?(stringValue: String) { self.stringValue = stringValue }
+    init?(intValue: Int) { nil }
 }
 
 /// Why a resolve did not return the style that was asked for.
@@ -166,7 +210,7 @@ public struct StyleLibrary: Sendable {
         var visited: [String] = []
         for _ in 0...styles.count {
             guard let style = styles[current] else {
-                return (styles["hours"] ?? .builtInHours, .unknown(current))
+                return (hours(for: family), .unknown(current))
             }
             visited.append(current)
             let next: String?
@@ -181,10 +225,18 @@ public struct StyleLibrary: Sendable {
             }
             guard let next else { break }
             if visited.contains(next) {
-                return (.builtInHours, .cycle(visited + [next]))
+                return (hours(for: family), .cycle(visited + [next]))
             }
             current = next
         }
-        return (.builtInHours, .tooDeep)
+        return (hours(for: family), .tooDeep)
+    }
+
+    /// Where every failure ends: the bundled Hours (or the compiled-in one), with this family's
+    /// typography applied, so a broken name still draws at the right size (`RR5`).
+    func hours(for family: Family) -> CountdownStyle {
+        var s = styles["hours"] ?? .builtInHours
+        if let t = s.families?[family]?.typography { s.typography = t }
+        return s
     }
 }

@@ -1,36 +1,100 @@
 [
-  {"id": "M1", "file": "CountdownCore/Sources/CountdownCore/Hours.swift",
-   "find": ".rounded(.down)", "replace": ".rounded()",
-   "caught_by": "HoursTests/neverRoundsUp"},
-  {"id": "M2", "file": "CountdownCore/Sources/CountdownCore/Snapshot.swift",
-   "find": "calendar.dateComponents([.year, .month, .day], from: from, to: to)",
-   "replace": "calendar.dateComponents([.year, .day], from: from, to: to)",
-   "caught_by": "SnapshotTests/monthEnd"},
-  {"id": "M3", "file": "CountdownCore/Sources/CountdownCore/Timeline.swift",
-   "find": "let anchor = target.addingTimeInterval(settle)",
-   "replace": "let anchor = Calendar.current.dateInterval(of: .hour, for: now)!.start.addingTimeInterval(settle)",
-   "caught_by": "TimelineTests/offHourTarget"},
-  {"id": "M4", "file": "CountdownCore/Sources/CountdownCore/Snapshot.swift",
-   "find": "let up = Int((date.timeIntervalSince(target) / 3600).rounded(.up)) - 1",
-   "replace": "let up = -hoursRemaining(from: date, to: target)",
-   "caught_by": "SnapshotTests/countUpFloors"},
-  {"id": "M5", "file": "CountdownCore/Sources/CountdownCore/Style.swift",
-   "find": "if visited.contains(next) {", "replace": "if false {",
-   "caught_by": "StyleTests/cycleDetected"},
-  {"id": "M6", "file": "CountdownCore/Sources/CountdownCore/Snapshot.swift",
-   "find": "progress = min(max(p, 0), 1)", "replace": "progress = p",
-   "caught_by": "SnapshotTests/progress"},
-  {"id": "M7", "file": "CountdownCore/Sources/CountdownCore/Snapshot.swift",
-   "find": "days = calendar.dateComponents([.day], from: from, to: to).day ?? 0",
-   "replace": "days = Int(to.timeIntervalSince(from) / 86400)",
-   "caught_by": "SnapshotTests/springForward"},
-  {"id": "M9", "file": "CountdownCore/Sources/CountdownCore/Snapshot.swift",
-   "find": "if remaining >= 3600 {", "replace": "if remaining > 3600 {",
-   "caught_by": "SnapshotTests/finalHourStarts"},
-  {"id": "M10", "file": "CountdownCore/Sources/CountdownCore/Timeline.swift",
-   "find": "public let settle: TimeInterval = 1", "replace": "public let settle: TimeInterval = 0",
-   "caught_by": "TimelineTests/constantBetweenEntries"},
-  {"id": "M11", "file": "CountdownCore/Sources/CountdownCore/Style.swift",
-   "find": "failures[url.lastPathComponent] = String(describing: error)", "replace": "_ = error",
-   "caught_by": "StyleTests/directoryRecordsFailures"}
+  {
+    "id": "M1",
+    "file": "CountdownCore/Sources/CountdownCore/Hours.swift",
+    "find": ".rounded(.down)",
+    "replace": ".rounded()",
+    "caught_by": "HoursTests/neverRoundsUp"
+  },
+  {
+    "id": "M2",
+    "file": "CountdownCore/Sources/CountdownCore/Snapshot.swift",
+    "find": "calendar.dateComponents([.year, .month, .day], from: from, to: to)",
+    "replace": "calendar.dateComponents([.year, .day], from: from, to: to)",
+    "caught_by": "SnapshotTests/monthEnd"
+  },
+  {
+    "id": "M3",
+    "file": "CountdownCore/Sources/CountdownCore/Timeline.swift",
+    "find": "let anchor = target.addingTimeInterval(settle)",
+    "replace": "let anchor = Calendar.current.dateInterval(of: .hour, for: now)!.start.addingTimeInterval(settle)",
+    "caught_by": "TimelineTests/offHourTarget"
+  },
+  {
+    "id": "M4",
+    "file": "CountdownCore/Sources/CountdownCore/Snapshot.swift",
+    "find": "let up = Int((date.timeIntervalSince(target) / 3600).rounded(.up)) - 1",
+    "replace": "let up = -hoursRemaining(from: date, to: target)",
+    "caught_by": "SnapshotTests/countUpFloors"
+  },
+  {
+    "id": "M5",
+    "file": "CountdownCore/Sources/CountdownCore/Style.swift",
+    "find": "if visited.contains(next) {",
+    "replace": "if false {",
+    "caught_by": "StyleTests/cycleDetected"
+  },
+  {
+    "id": "M6",
+    "file": "CountdownCore/Sources/CountdownCore/Snapshot.swift",
+    "find": "progress = min(max(p, 0), 1)",
+    "replace": "progress = p",
+    "caught_by": "SnapshotTests/progress"
+  },
+  {
+    "id": "M7",
+    "file": "CountdownCore/Sources/CountdownCore/Snapshot.swift",
+    "find": "days = calendar.dateComponents([.day], from: from, to: to).day ?? 0",
+    "replace": "days = Int(to.timeIntervalSince(from) / 86400)",
+    "caught_by": "SnapshotTests/springForward"
+  },
+  {
+    "id": "M9",
+    "file": "CountdownCore/Sources/CountdownCore/Snapshot.swift",
+    "find": "if remaining >= 3600 {",
+    "replace": "if remaining > 3600 {",
+    "caught_by": "SnapshotTests/finalHourStarts"
+  },
+  {
+    "id": "M10",
+    "file": "CountdownCore/Sources/CountdownCore/Timeline.swift",
+    "find": "public let settle: TimeInterval = 1",
+    "replace": "public let settle: TimeInterval = 0",
+    "caught_by": "TimelineTests/kolkataHalfHour"
+  },
+  {
+    "id": "M11",
+    "file": "CountdownCore/Sources/CountdownCore/Style.swift",
+    "find": "failures[url.lastPathComponent] = String(describing: error)",
+    "replace": "_ = error",
+    "caught_by": "StyleTests/directoryRecordsFailures"
+  },
+  {
+    "id": "M12",
+    "file": "CountdownCore/Sources/CountdownCore/Timeline.swift",
+    "find": "if b.timeIntervalSince(a) > 1, Shown(",
+    "replace": "if false, Shown(",
+    "caught_by": "TimelineTests/yearAroundTarget"
+  },
+  {
+    "id": "M13",
+    "file": "CountdownCore/Sources/CountdownCore/Timeline.swift",
+    "find": "candidates.append(midnight.addingTimeInterval(settle))",
+    "replace": "_ = midnight",
+    "caught_by": "TimelineTests/kolkataMonthEndMidnight"
+  },
+  {
+    "id": "M15",
+    "file": "CountdownCore/Sources/CountdownCore/Style.swift",
+    "find": "        try Self.refuseUnknownKeys(decoder)\n",
+    "replace": "",
+    "caught_by": "StyleTests/misspeltFieldsRefused"
+  },
+  {
+    "id": "M16",
+    "file": "CountdownCore/Sources/CountdownCore/Style.swift",
+    "find": "        if let t = s.families?[family]?.typography { s.typography = t }\n        return s",
+    "replace": "        return s",
+    "caught_by": "StyleTests/failuresKeepFamilyTypography"
+  }
 ]

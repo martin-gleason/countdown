@@ -1,6 +1,6 @@
 # Register — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:30 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:47 -06:00
 
 Every register for this project, one `##` each. Baseline: [countdown-widget-spec.md](../specs/countdown-widget-spec.md) (frozen 2026-11-08). **Where this register and the spec disagree, the register wins.** First-gate plan: [mvp.md](mvp.md). Open questions: [2026-11-08 spec review](../handoffs/2026-11-08-spec-review.md).
 
@@ -29,7 +29,7 @@ Immutable once ratified. Supersede, never edit. A rejected row stays, struck thr
 | D15 | ratified 2026-11-08 | MVP | **The spec gains `FR1`–`FR12`, `NFR1`–`NFR5` and a `## Stack` once, before its first commit, with no other words changed** (handoff Q1, option A). |
 | D16 | ratified 2026-11-08 | MVP | **The hour before the target shows "< 1", the hour starting at the target shows "Now", and after that the count-up runs from 1 or the done state shows** (handoff Q2, option A). Settles `FR8`. |
 | D17 | ratified 2026-11-08 | MVP | **Distribution: reinstall from Xcode once a year, with a recurring reminder** (handoff Q5, option A). Mitigates `RR3`. |
-| D18 | proposed | MVP | **Amends `D4`: timeline entries fall one second after each `target + k·3600 s`, and every boundary instant belongs to the earlier value.** A floored count changes just after a boundary, so an entry dated on it showed the old value for the hour (found by `C2` tests). For ratification at `G2`. |
+| D18 | proposed | MVP | **Amends `D4`: a timeline entry sits one second after every instant a shown value changes** — each `target + k·3600 s`, each local midnight (Calendar's month-end clamping steps Y/M/D there), and any other change found by checking every interval and bisecting to the second. A shown value lags by at most one second. Found by the `C2` tests and review ([review](../reviews/C2.md)). For ratification at `G2`. |
 
 ## Features (F)
 
@@ -126,8 +126,12 @@ All `proposed` until applied to shipped code and seen to fail.
 | M7 | Days computed as seconds ÷ 86,400 | `SnapshotTests/springForward` | killed 2026-11-08 — Run: run |
 | M8 | A missing iCloud value replaced by the default and written back (`D5`) | first-launch merge case (`F1`) | proposed |
 | M9 | The final hour starts at exactly target − 1 h instead of just after it (`D16`) | `SnapshotTests/finalHourStarts` | killed 2026-11-08 — Run: run |
-| M10 | Timeline entries dated on the boundary instead of one second after (`D18`) | `TimelineTests/constantBetweenEntries` | killed 2026-11-08 — Run: run |
+| M10 | Timeline entries dated on the boundary instead of one second after (`D18`) | `TimelineTests/kolkataHalfHour` | killed 2026-11-08 — Run: run |
 | M11 | A style file that fails to decode is dropped silently (`RR8`) | `StyleTests/directoryRecordsFailures` | killed 2026-11-08 — Run: run |
+| M12 | The timeline's interval check and bisection switched off (`D18`) | `TimelineTests/yearAroundTarget` | killed 2026-11-08 — Run: run |
+| M13 | Local midnights dropped from the timeline candidates (`D18`) | `TimelineTests/kolkataMonthEndMidnight` | killed 2026-11-08 — Run: run |
+| M15 | A misspelt field in a style file is ignored instead of refused (`RR8`) | `StyleTests/misspeltFieldsRefused` | killed 2026-11-08 — Run: run |
+| M16 | A failed resolve draws Hours without the family's typography (`RR5`) | `StyleTests/failuresKeepFamilyTypography` | killed 2026-11-08 — Run: run |
 
 -----
 2026-11-08
