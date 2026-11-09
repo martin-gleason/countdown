@@ -17,7 +17,7 @@ Named, never numbered (`D2`). **No source read here marks a milestone as the cur
 
 | Milestone | Decisions landing here | Units |
 |---|---|---|
-| MVP | 17 | — |
+| MVP | 18 | — |
 | — | 0 | C1 |
 
 ## Features and chores
@@ -34,13 +34,13 @@ Counted from the register itself. A register with no rows still gets a line.
 
 | Register | Rows | Open | Unknown | Closed |
 |---|---|---|---|---|
-| Decisions (`D`) | 17 | 0 | 0 | 17 |
+| Decisions (`D`) | 18 | 1 | 0 | 17 |
 | Risks (`RR`) | 8 | 8 | 0 | 0 |
 | Owner items (`O`) | 8 | 3 | 0 | 5 |
 | Agent items (`A`) | 4 | 3 | 0 | 1 |
 | Hooks (`H`) | 8 | 0 | 0 | 8 |
-| Mutations (`M`) | 8 | 7 | 0 | 1 |
-| Chores (`C`) | 4 | 2 | 0 | 2 |
+| Mutations (`M`) | 15 | 1 | 0 | 14 |
+| Chores (`C`) | 4 | 1 | 0 | 3 |
 | Other (F) (`F`) | 3 | 3 | 0 | 0 |
 | Gates (`G`) | 6 | 5 | 0 | 1 |
 
@@ -48,6 +48,7 @@ Counted from the register itself. A register with no rows still gets a line.
 
 | Register | Status | Count |
 |---|---|---|
+| `D` | proposed | 1 |
 | `D` | ratified | 17 |
 | `RR` | open | 8 |
 | `O` | done | 5 |
@@ -55,10 +56,10 @@ Counted from the register itself. A register with no rows still gets a line.
 | `A` | done | 1 |
 | `A` | open | 3 |
 | `H` | built | 8 |
-| `M` | killed | 1 |
-| `M` | proposed | 7 |
-| `C` | built | 2 |
-| `C` | open | 2 |
+| `M` | killed | 14 |
+| `M` | proposed | 1 |
+| `C` | built | 3 |
+| `C` | open | 1 |
 | `F` | not built | 3 |
 | `G` | done | 1 |
 | `G` | open | 5 |
@@ -84,7 +85,6 @@ Every open row in the register. Owner is the row's Owner column where the table 
 
 | Owner | ID | P | Status | Item |
 |---|---|---|---|---|
-| agent | C2 | P0 | open | CountdownCore package: snapshot math, style decoder, timeline builder, tests |
 | agent | RR1 | — | open | A widget sees a target change only after its host app runs on that device, and the Watch app may rarely run. |
 | agent | RR2 | — | open | iCloud key-value store on watchOS and inside a widget extension is unverified here. |
 | agent | RR4 | — | open | A new device writes default values over the real target before iCloud delivers it. |
@@ -93,6 +93,7 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | agent | RR7 | — | open | CI's macos-26 runner has Xcode 26.6 and Swift 6.3.3 (run on PR #2, 2026-11-08); local is Xcode 27.2 and Swift 6.4.2. Cod… |
 | agent | RR8 | — | open | A malformed style JSON shows only at runtime, as a blank widget. |
 | human | C3 | P1 | open | Install signed builds on every device, configure once, set the yearly reinstall reminder (D17), confirm still running af… |
+| owner | D18 | — | proposed | Amends D4: a timeline entry sits one second after every instant a shown value changes — each target + k·3600 s, each loc… |
 | owner | O6 | P1 | open | Confirm the paid Apple Developer membership is active and give the Team ID for the App Group and iCloud identifiers. |
 | owner | O7 | P1 | open | After C0, turn on branch protection for main: PR required, CI required, rebase-merge only. |
 | owner | O8 | P1 | open | Read CLAUDE.md, the reviewer and the vendored conventions, then run checkinstructions.py --acknowledge --date <day> in t… |
@@ -108,14 +109,8 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | unassigned | G4 | — | open | F2 complication is live on a watch face |
 | unassigned | G5 | — | open | F3 passes at the largest Dynamic Type size and under VoiceOver |
 | unassigned | G6 | — | open | MVP: still running on every device after 8 days |
-| unassigned | M2 | — | proposed | Y/M/D built from 86,400-second days |
-| unassigned | M3 | — | proposed | Timeline entries at the local top of the hour (D4) |
-| unassigned | M4 | — | proposed | Count-up after the target uses the countdown's sign or floor |
-| unassigned | M5 | — | proposed | A style fallback cycle is not detected |
-| unassigned | M6 | — | proposed | Ring/Bar progress not clamped to 0…1 |
-| unassigned | M7 | — | proposed | Days computed as seconds ÷ 86,400 |
 | unassigned | M8 | — | proposed | A missing iCloud value replaced by the default and written back (D5) |
 
 ---
 
-31 open register rows.
+25 open register rows.

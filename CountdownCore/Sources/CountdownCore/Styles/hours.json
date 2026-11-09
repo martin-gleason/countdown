@@ -1,0 +1,11 @@
+{
+  "displayName": "Hours",
+  "unit": "hours",
+  "arrangement": "stacked",
+  "typography": {"textStyle": "largeTitle", "weight": "semibold", "rounded": true, "monospacedDigits": true},
+  "accentRole": "number",
+  "numberFormat": {"grouping": true, "abbreviate": false},
+  "families": {
+    "accessoryInline": {"typography": {"textStyle": "body", "weight": "semibold", "rounded": true, "monospacedDigits": true}}
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "displayName": "Stacked",
+  "unit": "ymd",
+  "arrangement": "stacked",
+  "typography": {"textStyle": "title2", "weight": "semibold", "rounded": true, "monospacedDigits": true},
+  "accentRole": "number",
+  "numberFormat": {"grouping": false, "abbreviate": false},
+  "families": {
+    "accessoryInline": {"fallback": "hours"},
+    "accessoryCircular": {"fallback": "days"},
+    "accessoryCorner": {"fallback": "days"}
+  }
+}
