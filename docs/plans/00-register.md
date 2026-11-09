@@ -1,6 +1,6 @@
 # Register — Countdown
 
-Created: 2026-11-08 20:46 -06:00 · Edited: 2026-11-08 21:20 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:00 -06:00
 
 Every register for this project, one `##` each. Baseline: [countdown-widget-spec.md](../specs/countdown-widget-spec.md) (frozen 2026-11-08). **Where this register and the spec disagree, the register wins.** First-gate plan: [mvp.md](mvp.md). Open questions: [2026-11-08 spec review](../handoffs/2026-11-08-spec-review.md).
 

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Created: 2026-11-08 21:10 -06:00 · Edited: 2026-11-08 21:10 -06:00
+# Created: 2026-11-08 20:59 -06:00 · Edited: 2026-11-08 21:00 -06:00
 # commit-msg (`C0`): the subject follows `<type>(<F/C id>): …` with no register ID
 # (vendored check_commit_msg.py), and a doc losing most of its lines is declared with
 # `Rewrites: <path> — <why>` (check_overwrite.py). Both run, so every problem shows.

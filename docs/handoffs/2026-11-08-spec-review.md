@@ -1,6 +1,6 @@
 # Spec review and G1 questions
 
-Created: 2026-11-08 20:46 -06:00 · Edited: 2026-11-08 20:46 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:00 -06:00
 
 A review of [countdown-widget-spec.md](../specs/countdown-widget-spec.md) by Turing, before `G1`. Findings that need a decision are rows in the [register](../plans/00-register.md). This file holds the evidence and the five questions. **Answer under each question. An unanswered question stays open; it is never taken as a no.**
 

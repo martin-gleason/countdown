@@ -1,5 +1,5 @@
 #!/bin/sh
-# Created: 2026-11-08 21:10 -06:00 · Edited: 2026-11-08 21:10 -06:00
+# Created: 2026-11-08 20:59 -06:00 · Edited: 2026-11-08 21:00 -06:00
 # The document gates (`C0`), shared by pre-commit and CI. Run from the repository root.
 # Every check runs, so every problem is reported at once.
 cd "$(git rev-parse --show-toplevel)" || exit 1

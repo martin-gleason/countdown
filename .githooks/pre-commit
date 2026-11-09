@@ -1,5 +1,5 @@
 #!/bin/sh
-# Created: 2026-11-08 21:10 -06:00 · Edited: 2026-11-08 21:10 -06:00
+# Created: 2026-11-08 20:59 -06:00 · Edited: 2026-11-08 21:00 -06:00
 # pre-commit (`C0`): the gates run at commit time, so they cannot be satisfied in advance
 # and then edited past. Document gates, then stamps and the frozen spec on the staged files. `C1` adds the
 # Swift harness here. Install once: git config core.hooksPath .githooks

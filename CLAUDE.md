@@ -1,6 +1,6 @@
 # CLAUDE.md — Countdown
 
-Created: 2026-11-08 21:12 -06:00 · Edited: 2026-11-08 21:12 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:00 -06:00
 
 One tap-free number that answers "how long until then?" everywhere you look: a countdown widget for the iPhone Lock Screen, the Mac desktop and the Apple Watch.
 

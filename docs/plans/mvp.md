@@ -1,6 +1,6 @@
 # Plan — MVP, first gate (`G1`)
 
-Created: 2026-11-08 20:46 -06:00 · Edited: 2026-11-08 21:20 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:00 -06:00
 
 Covers `C0`, `C1` and `C2`, which together are spec Phase 1 (`D2`). The unit list, dependencies and status live in the [register](00-register.md). `F1`–`F3` and `C3` each get their own plan when their gate opens. **Nothing here starts until Marty says yes to `G1`.** Every task is `owner: agent` (`D13`), and the build runs serially (`D12`).
 

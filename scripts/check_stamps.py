@@ -1,4 +1,4 @@
-# Created: 2026-11-08 21:30 -06:00 · Edited: 2026-11-08 21:30 -06:00
+# Created: 2026-11-08 20:59 -06:00 · Edited: 2026-11-08 21:00 -06:00
 """Stamps and the frozen spec, register hooks H5 and H8 (`C0`).
 
     python3 scripts/check_stamps.py

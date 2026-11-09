@@ -1,4 +1,4 @@
-# Created: 2026-11-08 21:10 -06:00 · Edited: 2026-11-08 21:10 -06:00
+# Created: 2026-11-08 20:59 -06:00 · Edited: 2026-11-08 21:00 -06:00
 """Overwrite guard, register hook H7 (`C0`).
 
 A staged markdown file that loses more than 60% of the lines it had at HEAD (or is
