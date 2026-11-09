@@ -1,5 +1,7 @@
-# Created: 2026-11-08 21:12 -06:00 · Edited: 2026-11-08 21:12 -06:00
-# CI (`C1`): the same gates as the pre-commit hook, on a clean macOS runner.
+# Created: 2026-11-08 21:12 -06:00 · Edited: 2026-11-08 21:26 -06:00
+# CI (`C1`): the document gates, the requirement trace and the test gate, on a clean macOS
+# runner. The stamp and frozen-spec checks (`H5`, `H8`) read the staged index, so they run in
+# the pre-commit hook only.
 name: ci
 on:
   pull_request:
@@ -10,7 +12,7 @@ jobs:
     runs-on: macos-26
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Toolchain
@@ -18,11 +20,12 @@ jobs:
       - name: Document gates
         run: sh scripts/check_docs.sh
       - name: Requirement trace
-        run: python3 scripts/check_trace.py
-      - name: Tests and floor
+        # The ratchet compares with the commit this change starts from, not with itself.
         run: |
-          count=$(sh scripts/count_tests.sh | tail -1)
-          floor=$(cat tests/TEST_FLOOR)
-          echo "tests passed: $count, floor: $floor"
-          sh scripts/run_tests.sh
-          [ "$count" -ge "$floor" ]
+          if [ -n "$GITHUB_BASE_REF" ]; then base=$(git merge-base HEAD "origin/$GITHUB_BASE_REF")
+          else base="${{ github.event.before }}"; fi
+          git cat-file -e "$base^{commit}" 2>/dev/null || base=HEAD^
+          echo "ratchet base: $base"
+          python3 scripts/check_trace.py --base "$base"
+      - name: Tests and floor
+        run: sh scripts/test_gate.sh

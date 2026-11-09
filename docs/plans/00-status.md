@@ -69,7 +69,7 @@ Counted from the register itself. A register with no rows still gets a line.
 
 | ID | Hook | Surface | Protects | Status |
 |---|---|---|---|---|
-| H1 | swift test plus the count floor, run on the staged tree | pre-commit | test gate | built |
+| H1 | scripts/testgate.sh: one swift test run that must exit 0, and a passing count at or above the floor, on the staged tree | pre-commit + CI | test gate | built |
 | H2 | Document gates, the trace, swift test and the floor on a macos-26 runner; the xcodebuild compile check joins in F1 | CI | test gate | built |
 | H3 | Commit grammar <type>(<F/C id>): …, with no register ID | commit-msg | ID grammar | built |
 | H4 | The status page regenerates clean | pre-commit + CI | the status page stays current | built |
@@ -90,7 +90,7 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | agent | RR4 | — | open | A new device writes default values over the real target before iCloud delivers it. |
 | agent | RR5 | — | open | A five-digit Hours number on accessoryCircular, or Sentence on accessoryInline, does not fit at large type. |
 | agent | RR6 | — | open | WidgetKit and Liquid Glass APIs differ between the iOS 26 floor and the Xcode 27.2 SDK in use. |
-| agent | RR7 | — | open | GitHub's macOS runners may not have Xcode 27 or Swift 6.4, so CI cannot build. Unverified. |
+| agent | RR7 | — | open | CI's macos-26 runner has Xcode 26.6 and Swift 6.3.3 (run on PR #2, 2026-11-08); local is Xcode 27.2 and Swift 6.4.2. Cod… |
 | agent | RR8 | — | open | A malformed style JSON shows only at runtime, as a blank widget. |
 | human | C3 | P1 | open | Install signed builds on every device, configure once, set the yearly reinstall reminder (D17), confirm still running af… |
 | owner | O6 | P1 | open | Confirm the paid Apple Developer membership is active and give the Team ID for the App Group and iCloud identifiers. |
