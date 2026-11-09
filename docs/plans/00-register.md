@@ -1,6 +1,6 @@
 # Register — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:47 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-09 07:25 -06:00
 
 Every register for this project, one `##` each. Baseline: [countdown-widget-spec.md](../specs/countdown-widget-spec.md) (frozen 2026-11-08). **Where this register and the spec disagree, the register wins.** First-gate plan: [mvp.md](mvp.md). Open questions: [2026-11-08 spec review](../handoffs/2026-11-08-spec-review.md).
 
@@ -29,13 +29,14 @@ Immutable once ratified. Supersede, never edit. A rejected row stays, struck thr
 | D15 | ratified 2026-11-08 | MVP | **The spec gains `FR1`–`FR12`, `NFR1`–`NFR5` and a `## Stack` once, before its first commit, with no other words changed** (handoff Q1, option A). |
 | D16 | ratified 2026-11-08 | MVP | **The hour before the target shows "< 1", the hour starting at the target shows "Now", and after that the count-up runs from 1 or the done state shows** (handoff Q2, option A). Settles `FR8`. |
 | D17 | ratified 2026-11-08 | MVP | **Distribution: reinstall from Xcode once a year, with a recurring reminder** (handoff Q5, option A). Mitigates `RR3`. |
-| D18 | proposed | MVP | **Amends `D4`: a timeline entry sits one second after every instant a shown value changes** — each `target + k·3600 s`, each local midnight (Calendar's month-end clamping steps Y/M/D there), and any other change found by checking every interval and bisecting to the second. A shown value lags by at most one second. Found by the `C2` tests and review ([review](../reviews/C2.md)). For ratification at `G2`. |
+| D18 | ratified 2026-11-09 | MVP | **Amends `D4`: a timeline entry sits one second after every instant a shown value changes** — each `target + k·3600 s`, each local midnight (Calendar's month-end clamping steps Y/M/D there), and any other change found by checking every interval and bisecting to the second. A shown value lags by at most one second. Found by the `C2` tests and review ([review](../reviews/C2.md)). Ratified at `G2` (handoff Q1, option A). |
+| D19 | proposed | MVP | **The repo is public, amending `D11`.** It was found public on 2026-11-09 after Marty added a ruleset; GitHub's free plan protects branches only on public repos, which is probably why. It holds no secrets: the Team ID is public by design, and no signing material is in the tree. For Marty to confirm or revert. |
 
 ## Features (F)
 
 | ID | Feature | Status | Spec | Depends on | Plan |
 |---|---|---|---|---|---|
-| F1 | Lock Screen and Mac desktop widgets: Hours, Stacked and Days styles, the host app, iCloud sync | not built | Phase 2 | `C2`, `O6` | at `G2` |
+| F1 | Lock Screen and Mac desktop widgets: Hours, Stacked and Days styles, the host app, iCloud sync | not built — plan written 2026-11-09, waiting on Marty's yes | Phase 2 | `C2`, `O6` | [F1](F1.md) |
 | F2 | Apple Watch complications | not built | Phase 3 | `F1` | at `G3` |
 | F3 | Sentence, Ring, Bar and Milestone styles, accent colors, the count-up state, Dynamic Type, VoiceOver | not built | Phase 4 | `F1` | at `G4` |
 
@@ -43,9 +44,9 @@ Immutable once ratified. Supersede, never edit. A rejected row stays, struck thr
 
 | ID | Chore | P | Status | Owner | Depends on | Plan |
 |---|---|---|---|---|---|---|
-| C0 | Scaffold: git, vendored conventions (turing-review `9615341`), CLAUDE.md, reviewer agent, status page, private GitHub repo | P0 | built 2026-11-08 — private repo `martin-gleason/countdown` created and pushed; waiting on the PR merge | agent | `G1` | [mvp](mvp.md#c0) |
-| C1 | Build the Swift harness (run · count · floor · mutate · precommit) | P0 | built 2026-11-08 — also created the CountdownCore package and its first function (hours, `FR6`) so the harness has real code to break; waiting on the PR merge | agent | `C0` | [C1](C1.md) |
-| C2 | CountdownCore package: snapshot math, style decoder, timeline builder, tests | P0 | built 2026-11-08 — 31 tests, ten mutations killed; waiting on review and `G2` ([questions](../handoffs/2026-11-08-g2-core-shape.md)) | agent | `C1` | [mvp](mvp.md#c2) |
+| C0 | Scaffold: git, vendored conventions (turing-review `9615341`), CLAUDE.md, reviewer agent, status page, private GitHub repo | P0 | done 2026-11-09 — merged to `main` (PR #1) | agent | `G1` | [mvp](mvp.md#c0) |
+| C1 | Build the Swift harness (run · count · floor · mutate · precommit) | P0 | built 2026-11-08 — also created the CountdownCore package and its first function (hours, `FR6`) so the harness has real code to break. Done 2026-11-09: reviewed and merged; reaches `main` with PR #4 | agent | `C0` | [C1](C1.md) |
+| C2 | CountdownCore package: snapshot math, style decoder, timeline builder, tests | P0 | done 2026-11-09 — shape ratified at `G2`; reaches `main` with PR #4 | agent | `C1` | [mvp](mvp.md#c2) |
 | C3 | Install signed builds on every device, configure once, set the yearly reinstall reminder (`D17`), confirm still running after 8 days | P1 | open | human | `F3` | at `G5` |
 
 ## Gates (G)
@@ -55,7 +56,7 @@ A gate is an event: the owner's explicit yes. It is recorded here when it happen
 | ID | Gate | Status | What crossing it means |
 |---|---|---|---|
 | G1 | MVP plan and the `C0`–`C2` breakdown | done 2026-11-08 — "questions answered, begin g1" | Begin `C0`. |
-| G2 | Core shape ratified: tests green, including the hour-boundary, leap-day and DST cases | open | Write the `F1` plan. |
+| G2 | Core shape ratified: tests green, including the hour-boundary, leap-day and DST cases | done 2026-11-09 — "ratified and go!" ([handoff](../handoffs/2026-11-08-g2-core-shape.md)) | Write the `F1` plan. |
 | G3 | `F1` renders on iPhone and Mac in all three rendering modes; a target set on one appears on the other | open | Write the `F2` plan. |
 | G4 | `F2` complication is live on a watch face | open | Write the `F3` plan. |
 | G5 | `F3` passes at the largest Dynamic Type size and under VoiceOver | open | Begin `C3`. |
@@ -73,6 +74,7 @@ A gate is an event: the owner's explicit yes. It is recorded here when it happen
 | RR6 | WidgetKit and Liquid Glass APIs differ between the iOS 26 floor and the Xcode 27.2 SDK in use. | open | medium | medium | Spec §3 check of Apple's docs as `F1-T1`. | agent |
 | RR7 | CI's `macos-26` runner has Xcode 26.6 and Swift 6.3.3 (run on PR #2, 2026-11-08); local is Xcode 27.2 and Swift 6.4.2. Code using Swift 6.4 or the iOS 27 SDK would pass locally and fail CI. | open | medium | medium | Keep `swift-tools-version` at 6.2 and the iOS 26 floor (`NFR1`); CI prints its toolchain on every run. | agent |
 | RR8 | A malformed style JSON shows only at runtime, as a blank widget. | open | medium | medium | `D8`: every bundled file is decoded in tests; mutation `M5`. | agent |
+| RR9 | The Xcode project file is written by hand (`D14` rules out generators), and Xcode may refuse it or rewrite it on first open. | open | medium | low | `xcodebuild build` in CI from `F1-T1`; Marty's first open in Xcode is part of that task's checkpoint. | agent |
 
 ## Owner items (O)
 
@@ -83,9 +85,9 @@ A gate is an event: the owner's explicit yes. It is recorded here when it happen
 | O3 | Lock the learning level, ratifying or changing `D13` (handoff Q3). | P0 | done 2026-11-08 — `D13` |
 | O4 | Choose between a standing Workflow authorization and serial builds, ratifying or changing `D12` (handoff Q4). | P1 | done 2026-11-08 — `D12` |
 | O5 | Choose a distribution route that lasts until 2030-06-30 (handoff Q5, `RR3`). | P2 | done 2026-11-08 — `D17` |
-| O6 | Confirm the paid Apple Developer membership is active and give the Team ID for the App Group and iCloud identifiers. | P1 | open |
-| O7 | After `C0`, turn on branch protection for `main`: PR required, CI required, rebase-merge only. | P1 | open |
-| O8 | Read `CLAUDE.md`, the reviewer and the vendored conventions, then run `check_instructions.py --acknowledge --date <day>` in turing-review on this project. | P1 | open |
+| O6 | Confirm the paid Apple Developer membership is active and give the Team ID for the App Group and iCloud identifiers. | P1 | done 2026-11-09 — Team ID `KH6NBQRZBY` |
+| O7 | After `C0`, turn on branch protection for `main`: PR required, CI required, rebase-merge only. | P1 | open — the "Merge and Rebase" ruleset (2026-11-09) targets no branch, still allows merge and squash, and requires no CI check |
+| O8 | Read `CLAUDE.md`, the reviewer and the vendored conventions, then run `check_instructions.py --acknowledge --date <day>` in turing-review on this project. | P1 | open — in progress (Marty, 2026-11-09) |
 
 ## Agent items (A)
 
@@ -124,7 +126,7 @@ All `proposed` until applied to shipped code and seen to fail.
 | M5 | A style fallback cycle is not detected | `StyleTests/cycleDetected` (fails, does not hang) | killed 2026-11-08 — Run: run |
 | M6 | Ring/Bar progress not clamped to 0…1 | `SnapshotTests/progress` | killed 2026-11-08 — Run: run |
 | M7 | Days computed as seconds ÷ 86,400 | `SnapshotTests/springForward` | killed 2026-11-08 — Run: run |
-| M8 | A missing iCloud value replaced by the default and written back (`D5`) | first-launch merge case (`F1`) | proposed |
+| M8 | A missing iCloud value replaced by the default and written back (`D5`) | `StoreTests/firstLaunchKeepsRemote` (`F1`) | proposed |
 | M9 | The final hour starts at exactly target − 1 h instead of just after it (`D16`) | `SnapshotTests/finalHourStarts` | killed 2026-11-08 — Run: run |
 | M10 | Timeline entries dated on the boundary instead of one second after (`D18`) | `TimelineTests/kolkataHalfHour` | killed 2026-11-08 — Run: run |
 | M11 | A style file that fails to decode is dropped silently (`RR8`) | `StyleTests/directoryRecordsFailures` | killed 2026-11-08 — Run: run |
@@ -132,6 +134,10 @@ All `proposed` until applied to shipped code and seen to fail.
 | M13 | Local midnights dropped from the timeline candidates (`D18`) | `TimelineTests/kolkataMonthEndMidnight` | killed 2026-11-08 — Run: run |
 | M15 | A misspelt field in a style file is ignored instead of refused (`RR8`) | `StyleTests/misspeltFieldsRefused` | killed 2026-11-08 — Run: run |
 | M16 | A failed resolve draws Hours without the family's typography (`RR5`) | `StyleTests/failuresKeepFamilyTypography` | killed 2026-11-08 — Run: run |
+| M17 | The store's merge keeps the older record (`D5`) | `StoreTests/newestWins` (`F1`) | proposed |
+| M18 | Hours shown without grouping (`34872`) | `DisplayTests/hoursGrouped` (`F1`) | proposed |
+| M19 | The target date shown in the current zone, not its entry zone (`D6`) | `DisplayTests/targetDateInEntryZone` (`F1`) | proposed |
+| M20 | "Device default" draws Hours instead of the device's chosen style (`D7`) | `StoreTests/deviceDefaultStyle` (`F1`) | proposed |
 
 -----
 2026-11-08

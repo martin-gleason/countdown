@@ -1,6 +1,6 @@
 # G2 — the core's shape
 
-Created: 2026-11-08 21:30 -06:00 · Edited: 2026-11-08 21:47 -06:00
+Created: 2026-11-08 21:30 -06:00 · Edited: 2026-11-09 07:25 -06:00
 
 Spec §7 says nothing scales past Phase 1 until the core's shape is ratified. This is that shape: what `CountdownCore` (chore `C2`) exposes to the widgets, and one amendment found while building it. **Answer under each question. An unanswered question stays open.**
 
@@ -55,7 +55,7 @@ One side effect, which Foundation and spec `FR7` produce: across some month-end 
 - **A (recommended):** ratify `D18`.
 - **B:** narrow the promise to hours and Days only, and accept a stale Y/M/D at some midnights. That is less code, and Stacked and Sentence would show the wrong thing for up to 45 minutes.
 
-**Answer:**
+**Answer:** A. Marty, 2026-11-09: "I lean towards a. I want to watch the countdown to retirement -- or pull it up on demand." Recorded as `D18` ratified.
 
 ## Q2 — Ratify the shape above, and cross `G2`
 
@@ -64,4 +64,4 @@ Crossing G2 lets the `F1` plan begin: the widgets, the host app and iCloud sync.
 - **A (recommended):** ratify the shape as written and cross `G2`.
 - **B:** change something first (say what).
 
-**Answer:**
+**Answer:** A. Marty, 2026-11-09: "ratified and go!" `G2` crossed; the plan is [F1](../plans/F1.md).
