@@ -17,7 +17,7 @@ Named, never numbered (`D2`). **No source read here marks a milestone as the cur
 
 | Milestone | Decisions landing here | Units |
 |---|---|---|
-| MVP | 19 | — |
+| MVP | 20 | — |
 | — | 0 | C1, F1 |
 
 ## Features and chores
@@ -35,13 +35,13 @@ Counted from the register itself. A register with no rows still gets a line.
 
 | Register | Rows | Open | Unknown | Closed |
 |---|---|---|---|---|
-| Decisions (`D`) | 19 | 1 | 0 | 18 |
+| Decisions (`D`) | 20 | 0 | 0 | 20 |
 | Risks (`RR`) | 9 | 9 | 0 | 0 |
 | Owner items (`O`) | 8 | 2 | 0 | 6 |
 | Agent items (`A`) | 4 | 3 | 0 | 1 |
 | Hooks (`H`) | 8 | 0 | 0 | 8 |
 | Mutations (`M`) | 19 | 5 | 0 | 14 |
-| Chores (`C`) | 4 | 1 | 0 | 3 |
+| Chores (`C`) | 5 | 1 | 0 | 4 |
 | Other (F) (`F`) | 3 | 3 | 0 | 0 |
 | Gates (`G`) | 6 | 4 | 0 | 2 |
 
@@ -49,8 +49,7 @@ Counted from the register itself. A register with no rows still gets a line.
 
 | Register | Status | Count |
 |---|---|---|
-| `D` | proposed | 1 |
-| `D` | ratified | 18 |
+| `D` | ratified | 20 |
 | `RR` | open | 9 |
 | `O` | done | 6 |
 | `O` | open | 2 |
@@ -60,7 +59,7 @@ Counted from the register itself. A register with no rows still gets a line.
 | `M` | killed | 14 |
 | `M` | proposed | 5 |
 | `C` | built | 1 |
-| `C` | done | 2 |
+| `C` | done | 3 |
 | `C` | open | 1 |
 | `F` | not built | 3 |
 | `G` | done | 2 |
@@ -96,7 +95,6 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | agent | RR8 | — | open | A malformed style JSON shows only at runtime, as a blank widget. |
 | agent | RR9 | — | open | The Xcode project file is written by hand (D14 rules out generators), and Xcode may refuse it or rewrite it on first ope… |
 | human | C3 | P1 | open | Install signed builds on every device, configure once, set the yearly reinstall reminder (D17), confirm still running af… |
-| owner | D19 | — | proposed | The repo is public, amending D11. It was found public on 2026-11-09 after Marty added a ruleset; GitHub's free plan prot… |
 | owner | O7 | P1 | open | After C0, turn on branch protection for main: PR required, CI required, rebase-merge only. |
 | owner | O8 | P1 | open | Read CLAUDE.md, the reviewer and the vendored conventions, then run checkinstructions.py --acknowledge --date <day> in t… |
 | owner | RR3 | — | open | Signed builds expire: developer provisioning profiles last about a year (from memory, not checked), and a lapsed members… |
@@ -118,4 +116,4 @@ Every open row in the register. Owner is the row's Owner column where the table 
 
 ---
 
-28 open register rows.
+27 open register rows.

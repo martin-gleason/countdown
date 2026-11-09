@@ -1,6 +1,6 @@
 # Register — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-09 07:25 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-09 07:33 -06:00
 
 Every register for this project, one `##` each. Baseline: [countdown-widget-spec.md](../specs/countdown-widget-spec.md) (frozen 2026-11-08). **Where this register and the spec disagree, the register wins.** First-gate plan: [mvp.md](mvp.md). Open questions: [2026-11-08 spec review](../handoffs/2026-11-08-spec-review.md).
 
@@ -30,13 +30,14 @@ Immutable once ratified. Supersede, never edit. A rejected row stays, struck thr
 | D16 | ratified 2026-11-08 | MVP | **The hour before the target shows "< 1", the hour starting at the target shows "Now", and after that the count-up runs from 1 or the done state shows** (handoff Q2, option A). Settles `FR8`. |
 | D17 | ratified 2026-11-08 | MVP | **Distribution: reinstall from Xcode once a year, with a recurring reminder** (handoff Q5, option A). Mitigates `RR3`. |
 | D18 | ratified 2026-11-09 | MVP | **Amends `D4`: a timeline entry sits one second after every instant a shown value changes** — each `target + k·3600 s`, each local midnight (Calendar's month-end clamping steps Y/M/D there), and any other change found by checking every interval and bisecting to the second. A shown value lags by at most one second. Found by the `C2` tests and review ([review](../reviews/C2.md)). Ratified at `G2` (handoff Q1, option A). |
-| D19 | proposed | MVP | **The repo is public, amending `D11`.** It was found public on 2026-11-09 after Marty added a ruleset; GitHub's free plan protects branches only on public repos, which is probably why. It holds no secrets: the Team ID is public by design, and no signing material is in the tree. For Marty to confirm or revert. |
+| D19 | ratified 2026-11-09 | MVP | **The repo is public, amending `D11`.** It was found public on 2026-11-09 after Marty added a ruleset; GitHub's free plan protects branches only on public repos, which is probably why. It holds no secrets: the Team ID is public by design, and no signing material is in the tree. Marty: "d19 is ratified." |
+| D20 | ratified 2026-11-09 | MVP | **The project is licensed GPL-3.0-or-later** (`LICENSE`, text unchanged), following turing-review's upstream `D77`. Marty: "all projects begin life with a copyleft, open source license." GPL-3.0 was the agent's pick. |
 
 ## Features (F)
 
 | ID | Feature | Status | Spec | Depends on | Plan |
 |---|---|---|---|---|---|
-| F1 | Lock Screen and Mac desktop widgets: Hours, Stacked and Days styles, the host app, iCloud sync | not built — plan written 2026-11-09, waiting on Marty's yes | Phase 2 | `C2`, `O6` | [F1](F1.md) |
+| F1 | Lock Screen and Mac desktop widgets: Hours, Stacked and Days styles, the host app, iCloud sync | not built — plan approved 2026-11-09 ("f1 us aoorived"); building | Phase 2 | `C2`, `O6` | [F1](F1.md) |
 | F2 | Apple Watch complications | not built | Phase 3 | `F1` | at `G3` |
 | F3 | Sentence, Ring, Bar and Milestone styles, accent colors, the count-up state, Dynamic Type, VoiceOver | not built | Phase 4 | `F1` | at `G4` |
 
@@ -48,6 +49,7 @@ Immutable once ratified. Supersede, never edit. A rejected row stays, struck thr
 | C1 | Build the Swift harness (run · count · floor · mutate · precommit) | P0 | built 2026-11-08 — also created the CountdownCore package and its first function (hours, `FR6`) so the harness has real code to break. Done 2026-11-09: reviewed and merged; reaches `main` with PR #4 | agent | `C0` | [C1](C1.md) |
 | C2 | CountdownCore package: snapshot math, style decoder, timeline builder, tests | P0 | done 2026-11-09 — shape ratified at `G2`; reaches `main` with PR #4 | agent | `C1` | [mvp](mvp.md#c2) |
 | C3 | Install signed builds on every device, configure once, set the yearly reinstall reminder (`D17`), confirm still running after 8 days | P1 | open | human | `F3` | at `G5` |
+| C4 | Add the GPL-3.0 `LICENSE` (`D20`) | P1 | done 2026-11-09 | agent | — | this row |
 
 ## Gates (G)
 
