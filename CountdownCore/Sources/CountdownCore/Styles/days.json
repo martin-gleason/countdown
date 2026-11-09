@@ -1,0 +1,8 @@
+{
+  "displayName": "Days",
+  "unit": "days",
+  "arrangement": "stacked",
+  "typography": {"textStyle": "largeTitle", "weight": "semibold", "rounded": true, "monospacedDigits": true},
+  "accentRole": "number",
+  "numberFormat": {"grouping": true, "abbreviate": false}
+}

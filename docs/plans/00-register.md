@@ -1,6 +1,6 @@
 # Register — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:27 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:29 -06:00
 
 Every register for this project, one `##` each. Baseline: [countdown-widget-spec.md](../specs/countdown-widget-spec.md) (frozen 2026-11-08). **Where this register and the spec disagree, the register wins.** First-gate plan: [mvp.md](mvp.md). Open questions: [2026-11-08 spec review](../handoffs/2026-11-08-spec-review.md).
 
@@ -29,6 +29,7 @@ Immutable once ratified. Supersede, never edit. A rejected row stays, struck thr
 | D15 | ratified 2026-11-08 | MVP | **The spec gains `FR1`–`FR12`, `NFR1`–`NFR5` and a `## Stack` once, before its first commit, with no other words changed** (handoff Q1, option A). |
 | D16 | ratified 2026-11-08 | MVP | **The hour before the target shows "< 1", the hour starting at the target shows "Now", and after that the count-up runs from 1 or the done state shows** (handoff Q2, option A). Settles `FR8`. |
 | D17 | ratified 2026-11-08 | MVP | **Distribution: reinstall from Xcode once a year, with a recurring reminder** (handoff Q5, option A). Mitigates `RR3`. |
+| D18 | proposed | MVP | **Amends `D4`: timeline entries fall one second after each `target + k·3600 s`, and every boundary instant belongs to the earlier value.** A floored count changes just after a boundary, so an entry dated on it showed the old value for the hour (found by `C2` tests). For ratification at `G2`. |
 
 ## Features (F)
 
@@ -117,13 +118,16 @@ All `proposed` until applied to shipped code and seen to fail.
 | ID | Mutation | Caught by | Status |
 |---|---|---|---|
 | M1 | Hours rounds instead of floors | `HoursTests/neverRoundsUp` | killed 2026-11-08 — Run: run |
-| M2 | Y/M/D built from 86,400-second days | DST and month-end cases | proposed |
-| M3 | Timeline entries at the local top of the hour (`D4`) | Asia/Kolkata timeline case | proposed |
-| M4 | Count-up after the target uses the countdown's sign or floor | target +1 h, both flag values | proposed |
-| M5 | A style fallback cycle is not detected | decoder cycle fixture (must fail, not hang) | proposed |
-| M6 | Ring/Bar progress not clamped to 0…1 | now before start; now after target | proposed |
-| M7 | Days computed as seconds ÷ 86,400 | DST-day Days case | proposed |
+| M2 | Y/M/D computed without the month component | `SnapshotTests/monthEnd` | killed 2026-11-08 — Run: run |
+| M3 | Timeline entries at the local top of the hour (`D4`). Escaped the Kolkata test, which cannot see it on a whole-hour machine zone; re-paired | `TimelineTests/offHourTarget` | killed 2026-11-08 — Run: run |
+| M4 | Count-up after the target negates the countdown's floor | `SnapshotTests/countUpFloors` | killed 2026-11-08 — Run: run |
+| M5 | A style fallback cycle is not detected | `StyleTests/cycleDetected` (fails, does not hang) | killed 2026-11-08 — Run: run |
+| M6 | Ring/Bar progress not clamped to 0…1 | `SnapshotTests/progress` | killed 2026-11-08 — Run: run |
+| M7 | Days computed as seconds ÷ 86,400 | `SnapshotTests/springForward` | killed 2026-11-08 — Run: run |
 | M8 | A missing iCloud value replaced by the default and written back (`D5`) | first-launch merge case (`F1`) | proposed |
+| M9 | The final hour starts at exactly target − 1 h instead of just after it (`D16`) | `SnapshotTests/finalHourStarts` | killed 2026-11-08 — Run: run |
+| M10 | Timeline entries dated on the boundary instead of one second after (`D18`) | `TimelineTests/constantBetweenEntries` | killed 2026-11-08 — Run: run |
+| M11 | A style file that fails to decode is dropped silently (`RR8`) | `StyleTests/directoryRecordsFailures` | killed 2026-11-08 — Run: run |
 
 -----
 2026-11-08
