@@ -37,10 +37,10 @@ Counted from the register itself. A register with no rows still gets a line.
 | Decisions (`D`) | 17 | 0 | 0 | 17 |
 | Risks (`RR`) | 8 | 8 | 0 | 0 |
 | Owner items (`O`) | 8 | 3 | 0 | 5 |
-| Agent items (`A`) | 4 | 4 | 0 | 0 |
-| Hooks (`H`) | 8 | 3 | 0 | 5 |
-| Mutations (`M`) | 8 | 8 | 0 | 0 |
-| Chores (`C`) | 4 | 3 | 0 | 1 |
+| Agent items (`A`) | 4 | 3 | 0 | 1 |
+| Hooks (`H`) | 8 | 0 | 0 | 8 |
+| Mutations (`M`) | 8 | 7 | 0 | 1 |
+| Chores (`C`) | 4 | 2 | 0 | 2 |
 | Other (F) (`F`) | 3 | 3 | 0 | 0 |
 | Gates (`G`) | 6 | 5 | 0 | 1 |
 
@@ -52,28 +52,29 @@ Counted from the register itself. A register with no rows still gets a line.
 | `RR` | open | 8 |
 | `O` | done | 5 |
 | `O` | open | 3 |
-| `A` | open | 4 |
-| `H` | built | 5 |
-| `H` | not built | 3 |
-| `M` | proposed | 8 |
-| `C` | built | 1 |
-| `C` | open | 3 |
+| `A` | done | 1 |
+| `A` | open | 3 |
+| `H` | built | 8 |
+| `M` | killed | 1 |
+| `M` | proposed | 7 |
+| `C` | built | 2 |
+| `C` | open | 2 |
 | `F` | not built | 3 |
 | `G` | done | 1 |
 | `G` | open | 5 |
 
 ## Hooks
 
-**5 of 8 built.** Prose is advisory; hooks are not. A hook's status is what the register says — this page does not go looking in `scripts/` for a file and infer that the hook works, because a file existing is not evidence that it ever failed.
+**8 of 8 built.** Prose is advisory; hooks are not. A hook's status is what the register says — this page does not go looking in `scripts/` for a file and infer that the hook works, because a file existing is not evidence that it ever failed.
 
 | ID | Hook | Surface | Protects | Status |
 |---|---|---|---|---|
-| H1 | swift test plus the count floor, run on the staged tree | pre-commit | test gate | not built |
-| H2 | swift test and an xcodebuild compile check on a macOS runner | CI | test gate | not built |
+| H1 | scripts/testgate.sh: one swift test run that must exit 0, and a passing count at or above the floor, on the staged tree | pre-commit + CI | test gate | built |
+| H2 | Document gates, the trace, swift test and the floor on a macos-26 runner; the xcodebuild compile check joins in F1 | CI | test gate | built |
 | H3 | Commit grammar <type>(<F/C id>): …, with no register ID | commit-msg | ID grammar | built |
-| H4 | The status page regenerates clean | pre-commit (CI joins in `C1`) | the status page stays current | built |
+| H4 | The status page regenerates clean | pre-commit + CI | the status page stays current | built |
 | H5 | Every staged file carries a current Created · Edited stamp | pre-commit | the stamp rule (upstream `D76`) | built |
-| H6 | Every test cites an FR or a D, and every FR has a test | CI | drift, both directions | not built |
+| H6 | Every test cites an FR or a D, and every FR has a test | pre-commit + CI | drift, both directions | built |
 | H7 | A doc losing over 60% of its lines needs Rewrites: <path> — <why> | commit-msg | overwrite by shell redirect | built |
 | H8 | A staged change to anything in docs/specs/ is refused | pre-commit | the frozen spec (`D1`) | built |
 
@@ -83,14 +84,13 @@ Every open row in the register. Owner is the row's Owner column where the table 
 
 | Owner | ID | P | Status | Item |
 |---|---|---|---|---|
-| agent | C1 | P0 | open | Build the Swift harness (run · count · floor · mutate · precommit) |
 | agent | C2 | P0 | open | CountdownCore package: snapshot math, style decoder, timeline builder, tests |
 | agent | RR1 | — | open | A widget sees a target change only after its host app runs on that device, and the Watch app may rarely run. |
 | agent | RR2 | — | open | iCloud key-value store on watchOS and inside a widget extension is unverified here. |
 | agent | RR4 | — | open | A new device writes default values over the real target before iCloud delivers it. |
 | agent | RR5 | — | open | A five-digit Hours number on accessoryCircular, or Sentence on accessoryInline, does not fit at large type. |
 | agent | RR6 | — | open | WidgetKit and Liquid Glass APIs differ between the iOS 26 floor and the Xcode 27.2 SDK in use. |
-| agent | RR7 | — | open | GitHub's macOS runners may not have Xcode 27 or Swift 6.4, so CI cannot build. Unverified. |
+| agent | RR7 | — | open | CI's macos-26 runner has Xcode 26.6 and Swift 6.3.3 (run on PR #2, 2026-11-08); local is Xcode 27.2 and Swift 6.4.2. Cod… |
 | agent | RR8 | — | open | A malformed style JSON shows only at runtime, as a blank widget. |
 | human | C3 | P1 | open | Install signed builds on every device, configure once, set the yearly reinstall reminder (D17), confirm still running af… |
 | owner | O6 | P1 | open | Confirm the paid Apple Developer membership is active and give the Team ID for the App Group and iCloud identifiers. |
@@ -98,7 +98,6 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | owner | O8 | P1 | open | Read CLAUDE.md, the reviewer and the vendored conventions, then run checkinstructions.py --acknowledge --date <day> in t… |
 | owner | RR3 | — | open | Signed builds expire: developer provisioning profiles last about a year (from memory, not checked), and a lapsed members… |
 | unassigned | A1 | P2 | open | Upstream stamp.py exempts neither vendored scripts nor a frozen spec. Here scripts/checkstamps.py covers both, but the s… |
-| unassigned | A2 | P1 | open | pre-commit reads the working tree, not the staged tree. In C1, run it on an exported index, as MusicShare does. |
 | unassigned | A3 | P2 | open | Upstream genstatus.py treats an unknown flag such as --help as a request to write. Report it in turing-review. |
 | unassigned | A4 | P2 | open | Upstream stamp.py --check compares Edited with the last commit at minute resolution, so an edit within the same minute p… |
 | unassigned | F1 | — | not built | Lock Screen and Mac desktop widgets: Hours, Stacked and Days styles, the host app, iCloud sync |
@@ -109,10 +108,6 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | unassigned | G4 | — | open | F2 complication is live on a watch face |
 | unassigned | G5 | — | open | F3 passes at the largest Dynamic Type size and under VoiceOver |
 | unassigned | G6 | — | open | MVP: still running on every device after 8 days |
-| unassigned | H1 | — | not built | swift test plus the count floor, run on the staged tree |
-| unassigned | H2 | — | not built | swift test and an xcodebuild compile check on a macOS runner |
-| unassigned | H6 | — | not built | Every test cites an FR or a D, and every FR has a test |
-| unassigned | M1 | — | proposed | Hours rounds instead of floors |
 | unassigned | M2 | — | proposed | Y/M/D built from 86,400-second days |
 | unassigned | M3 | — | proposed | Timeline entries at the local top of the hour (D4) |
 | unassigned | M4 | — | proposed | Count-up after the target uses the countdown's sign or floor |
@@ -123,4 +118,4 @@ Every open row in the register. Owner is the row's Owner column where the table 
 
 ---
 
-37 open register rows.
+31 open register rows.

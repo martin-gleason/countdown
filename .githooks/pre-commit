@@ -1,14 +1,26 @@
 #!/bin/sh
-# Created: 2026-11-08 20:59 -06:00 · Edited: 2026-11-08 21:00 -06:00
-# pre-commit (`C0`): the gates run at commit time, so they cannot be satisfied in advance
-# and then edited past. Document gates, then stamps and the frozen spec on the staged files. `C1` adds the
-# Swift harness here. Install once: git config core.hooksPath .githooks
+# Created: 2026-11-08 21:12 -06:00 · Edited: 2026-11-08 21:26 -06:00
+# Harness `precommit` (`C0`, `C1`): the gates run at commit time on exactly the tree being
+# committed, so they cannot be satisfied in advance and then edited past. The index is
+# exported to a temporary directory and the document gates, the trace and the tests run
+# there; unstaged edits and untracked files play no part (closes register item A2).
+# Stamps and the frozen-spec guard read git's index, so they run from the repository.
+# Install once: git config core.hooksPath .githooks
 root=$(git rev-parse --show-toplevel) || exit 1
-cd "$root" || exit 1
-if ! git diff --quiet; then
-    printf '  note  unstaged changes present; the document gates read the working tree.\n'
-fi
+tmp=$(mktemp -d "${TMPDIR:-/tmp}/countdown-precommit.XXXXXX") || exit 1
+trap 'rm -rf "$tmp"' EXIT
+trap 'exit 1' HUP INT TERM
+git checkout-index -a --prefix="$tmp/" || exit 1
 fail=0
-sh scripts/check_docs.sh || fail=1
-python3 scripts/check_stamps.py || fail=1
+(cd "$root" && python3 scripts/check_stamps.py) || fail=1
+for f in scripts/check_docs.sh scripts/check_trace.py scripts/test_gate.sh tests/TEST_FLOOR; do
+    [ -f "$tmp/$f" ] || { echo "pre-commit: $f is not in the staged tree" >&2; exit 1; }
+done
+# The export has no .git. The trace's ratchet compares with HEAD, so it reads the real
+# repository's git. The build cache lives in the repository, so commits do not rebuild
+# from nothing; the sources it builds are the export's.
+cache="$root/CountdownCore/.build"
+GIT_DIR="$root/.git" sh "$tmp/scripts/check_docs.sh" || fail=1
+GIT_DIR="$root/.git" python3 "$tmp/scripts/check_trace.py" --scratch-path "$cache" || fail=1
+sh "$tmp/scripts/test_gate.sh" "$cache" || fail=1
 [ "$fail" -eq 0 ] || { printf '\nrefused. Fix, or --no-verify deliberately.\n'; exit 1; }

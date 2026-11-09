@@ -1,0 +1,9 @@
+[
+  {
+    "id": "M1",
+    "file": "CountdownCore/Sources/CountdownCore/Hours.swift",
+    "find": ".rounded(.down)",
+    "replace": ".rounded()",
+    "caught_by": "HoursTests/neverRoundsUp"
+  }
+]

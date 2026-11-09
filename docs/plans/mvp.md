@@ -1,6 +1,6 @@
 # Plan — MVP, first gate (`G1`)
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:00 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:27 -06:00
 
 Covers `C0`, `C1` and `C2`, which together are spec Phase 1 (`D2`). The unit list, dependencies and status live in the [register](00-register.md). `F1`–`F3` and `C3` each get their own plan when their gate opens. **Nothing here starts until Marty says yes to `G1`.** Every task is `owner: agent` (`D13`), and the build runs serially (`D12`).
 
@@ -17,11 +17,11 @@ Scaffold. Nothing user-visible.
 
 ## C1
 
-Swift harness. Contract: [C1.md](C1.md). Shape:
+Swift harness. Contract: [C1.md](C1.md). Declared in `docs/conventions-local.md` § Harness:
 
-- **run:** `swift test --package-path CountdownCore`. The `xcodebuild` compile check joins in `F1`, when an Xcode project exists.
-- **count:** the executed-test count parsed from `swift test` output. Swift Testing reports tests, not individual `#expect`s, so this floor counts tests. (**Not yet checked** against Swift 6.4's output format.)
-- **floor:** `CountdownCore/.test-floor`. **mutate:** `scripts/mutate.sh` runs find→replace edits from `tests/mutations.json`, each naming the test that must go red. **precommit:** `.githooks/pre-commit` (`H1`).
+- **run:** `sh scripts/run_tests.sh` (`swift test` on `CountdownCore/`). The `xcodebuild` compile check joins in `F1`, when an Xcode project exists.
+- **count:** `sh scripts/count_tests.sh`. Tests that ran and passed, read from Swift Testing's summary line, minus skipped tests. Checked against Swift 6.4.2 locally and 6.3.3 on CI.
+- **floor:** `tests/TEST_FLOOR`. **mutate:** `python3 scripts/mutate.py` with `tests/mutations.json`. **precommit:** `.githooks/pre-commit`, which gates an export of the staged tree; `scripts/test_gate.sh` is shared with CI.
 
 ## C2
 
@@ -29,7 +29,7 @@ CountdownCore: a Swift package with no UI, for iOS, macOS and watchOS 26. **Wait
 
 | Task | Work | Checkpoint |
 |---|---|---|
-| C2-T1 | **Foundational, nothing user-visible.** Package skeleton, Swift Testing, wired into `C1`'s harness | `swift test` runs; the count is at or above the floor |
+| C2-T1 | **Foundational, nothing user-visible.** Package skeleton, Swift Testing, wired into `C1`'s harness. **Done early in `C1`**, with the hours floor from C2-T2, so the harness had code to break. | `swift test` runs; the count is at or above the floor |
 | C2-T2 | `CountdownSnapshot`: hours (floor), count-up, Days, Y/M/D, progress, the Now and done states (`O2`) | every spec §5 case has a named passing test (cases below) |
 | C2-T3 | `CountdownStyle` decoder and per-family fallback with cycle detection; `hours.json`, `stacked.json` and `days.json` in package resources (`D8`) | every bundled file decodes; the bad and cyclic fixtures are refused |
 | C2-T4 | Timeline builder: entry dates at `target − k·3600 s` (`D4`), 24 ahead, plus the target instant itself. Returns plain dates; no WidgetKit import | Asia/Kolkata, on-hour, off-hour and past-target cases pass |

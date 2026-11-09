@@ -1,6 +1,6 @@
 # Register — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:14 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-08 21:27 -06:00
 
 Every register for this project, one `##` each. Baseline: [countdown-widget-spec.md](../specs/countdown-widget-spec.md) (frozen 2026-11-08). **Where this register and the spec disagree, the register wins.** First-gate plan: [mvp.md](mvp.md). Open questions: [2026-11-08 spec review](../handoffs/2026-11-08-spec-review.md).
 
@@ -43,7 +43,7 @@ Immutable once ratified. Supersede, never edit. A rejected row stays, struck thr
 | ID | Chore | P | Status | Owner | Depends on | Plan |
 |---|---|---|---|---|---|---|
 | C0 | Scaffold: git, vendored conventions (turing-review `9615341`), CLAUDE.md, reviewer agent, status page, private GitHub repo | P0 | built 2026-11-08 — private repo `martin-gleason/countdown` created and pushed; waiting on the PR merge | agent | `G1` | [mvp](mvp.md#c0) |
-| C1 | Build the Swift harness (run · count · floor · mutate · precommit) | P0 | open | agent | `C0` | [C1](C1.md) |
+| C1 | Build the Swift harness (run · count · floor · mutate · precommit) | P0 | built 2026-11-08 — also created the CountdownCore package and its first function (hours, `FR6`) so the harness has real code to break; waiting on the PR merge | agent | `C0` | [C1](C1.md) |
 | C2 | CountdownCore package: snapshot math, style decoder, timeline builder, tests | P0 | open | agent | `C1` | [mvp](mvp.md#c2) |
 | C3 | Install signed builds on every device, configure once, set the yearly reinstall reminder (`D17`), confirm still running after 8 days | P1 | open | human | `F3` | at `G5` |
 
@@ -70,7 +70,7 @@ A gate is an event: the owner's explicit yes. It is recorded here when it happen
 | RR4 | A new device writes default values over the real target before iCloud delivers it. | open | medium | high | `D5`, plus mutation `M8`. | agent |
 | RR5 | A five-digit Hours number on accessoryCircular, or Sentence on accessoryInline, does not fit at large type. | open | high | medium | Per-family fallback and abbreviation; checked at `G3` and `G5`. | agent |
 | RR6 | WidgetKit and Liquid Glass APIs differ between the iOS 26 floor and the Xcode 27.2 SDK in use. | open | medium | medium | Spec §3 check of Apple's docs as `F1-T1`. | agent |
-| RR7 | GitHub's macOS runners may not have Xcode 27 or Swift 6.4, so CI cannot build. **Unverified.** | open | medium | medium | `C1` checks the runner image first; the local pre-commit stays the gate meanwhile. | agent |
+| RR7 | CI's `macos-26` runner has Xcode 26.6 and Swift 6.3.3 (run on PR #2, 2026-11-08); local is Xcode 27.2 and Swift 6.4.2. Code using Swift 6.4 or the iOS 27 SDK would pass locally and fail CI. | open | medium | medium | Keep `swift-tools-version` at 6.2 and the iOS 26 floor (`NFR1`); CI prints its toolchain on every run. | agent |
 | RR8 | A malformed style JSON shows only at runtime, as a blank widget. | open | medium | medium | `D8`: every bundled file is decoded in tests; mutation `M5`. | agent |
 
 ## Owner items (O)
@@ -91,7 +91,7 @@ A gate is an event: the owner's explicit yes. It is recorded here when it happen
 | ID | Item | P | Status |
 |---|---|---|---|
 | A1 | Upstream `stamp.py` exempts neither vendored scripts nor a frozen spec. Here `scripts/check_stamps.py` covers both, but the spec's first commit went in before it existed, with the waiver in its body. Propose the exemptions in turing-review. | P2 | open |
-| A2 | `pre-commit` reads the working tree, not the staged tree. In `C1`, run it on an exported index, as MusicShare does. | P1 | open |
+| A2 | `pre-commit` reads the working tree, not the staged tree. In `C1`, run it on an exported index, as MusicShare does. | P1 | done 2026-11-08 — `C1` exports the index |
 | A3 | Upstream `gen_status.py` treats an unknown flag such as `--help` as a request to write. Report it in turing-review. | P2 | open |
 | A4 | Upstream `stamp.py --check` compares Edited with the last commit at minute resolution, so an edit within the same minute passes unstamped. `check_stamps.py` closes it here. Propose the fix in turing-review. | P2 | open |
 
@@ -101,12 +101,12 @@ Plan-local labels. Never in a commit, branch or PR title. The vendored scripts p
 
 | ID | Hook | Surface | Protects | Status |
 |---|---|---|---|---|
-| H1 | `swift test` plus the count floor, run on the staged tree | pre-commit | test gate | not built (`C1`) |
-| H2 | `swift test` and an `xcodebuild` compile check on a macOS runner | CI | test gate | not built (`C1`, `RR7`) |
+| H1 | `scripts/test_gate.sh`: one `swift test` run that must exit 0, and a passing count at or above the floor, on the staged tree | pre-commit + CI | test gate | built 2026-11-08 (`C1`) |
+| H2 | Document gates, the trace, `swift test` and the floor on a `macos-26` runner; the `xcodebuild` compile check joins in `F1` | CI | test gate | built 2026-11-08 (`C1`); first run is the `C1` PR |
 | H3 | Commit grammar `<type>(<F/C id>): …`, with no register ID | commit-msg | ID grammar | built 2026-11-08 (`C0`) |
-| H4 | The status page regenerates clean | pre-commit (CI joins in `C1`) | the status page stays current | built 2026-11-08 (`C0`) |
+| H4 | The status page regenerates clean | pre-commit + CI | the status page stays current | built 2026-11-08 (`C0`) |
 | H5 | Every staged file carries a current Created · Edited stamp | pre-commit | the stamp rule (upstream `D76`) | built 2026-11-08 (`C0`) |
-| H6 | Every test cites an `FR` or a `D`, and every `FR` has a test | CI | drift, both directions | not built (`C1`) |
+| H6 | Every test cites an `FR` or a `D`, and every `FR` has a test | pre-commit + CI | drift, both directions | built 2026-11-08 (`C1`) |
 | H7 | A doc losing over 60% of its lines needs `Rewrites: <path> — <why>` | commit-msg | overwrite by shell redirect | built 2026-11-08 (`C0`) |
 | H8 | A staged change to anything in `docs/specs/` is refused | pre-commit | the frozen spec (`D1`) | built 2026-11-08 (`C0`) |
 
@@ -116,7 +116,7 @@ All `proposed` until applied to shipped code and seen to fail.
 
 | ID | Mutation | Caught by | Status |
 |---|---|---|---|
-| M1 | Hours rounds instead of floors | hour boundary ±1 s | proposed |
+| M1 | Hours rounds instead of floors | `HoursTests/neverRoundsUp` | killed 2026-11-08 — Run: run |
 | M2 | Y/M/D built from 86,400-second days | DST and month-end cases | proposed |
 | M3 | Timeline entries at the local top of the hour (`D4`) | Asia/Kolkata timeline case | proposed |
 | M4 | Count-up after the target uses the countdown's sign or floor | target +1 h, both flag values | proposed |
