@@ -1,15 +1,12 @@
-// Created: 2026-11-09 07:37 -06:00 · Edited: 2026-11-09 07:37 -06:00
+// Created: 2026-11-09 07:37 -06:00 · Edited: 2026-11-10 07:35 -06:00
 import Foundation
 
-/// The App Group the host app writes and the widget reads (`F1`). Each platform uses the form
-/// Apple documents for it: `group.` on iOS; the Team-ID prefix on macOS, which needs no
-/// provisioning profile. Must match Entitlements/*.entitlements.
+/// The App Group the host app writes and the widget reads (`F1`). One id on both platforms:
+/// Xcode's automatic signing refuses to register the Team-ID-prefixed macOS form ("Application
+/// Group identifiers should start with 'group.'", 2026-11-10), and Mac profiles have covered
+/// `group.` ids since 2025. Must match Entitlements/*.entitlements.
 enum AppGroup {
-    #if os(macOS)
-    static let id = "KH6NBQRZBY.com.martingleason.countdown"
-    #else
     static let id = "group.com.martingleason.countdown"
-    #endif
 }
 
 /// The spec's target until the store exists (`F1-T2`): 2030-06-30 17:00 America/Chicago.
