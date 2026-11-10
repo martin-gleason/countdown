@@ -1,6 +1,6 @@
 # Register — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-09 07:39 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-10 07:36 -06:00
 
 Every register for this project, one `##` each. Baseline: [countdown-widget-spec.md](../specs/countdown-widget-spec.md) (frozen 2026-11-08). **Where this register and the spec disagree, the register wins.** First-gate plan: [mvp.md](mvp.md). Open questions: [2026-11-08 spec review](../handoffs/2026-11-08-spec-review.md).
 
@@ -32,6 +32,7 @@ Immutable once ratified. Supersede, never edit. A rejected row stays, struck thr
 | D18 | ratified 2026-11-09 | MVP | **Amends `D4`: a timeline entry sits one second after every instant a shown value changes** — each `target + k·3600 s`, each local midnight (Calendar's month-end clamping steps Y/M/D there), and any other change found by checking every interval and bisecting to the second. A shown value lags by at most one second. Found by the `C2` tests and review ([review](../reviews/C2.md)). Ratified at `G2` (handoff Q1, option A). |
 | D19 | ratified 2026-11-09 | MVP | **The repo is public, amending `D11`.** It was found public on 2026-11-09 after Marty added a ruleset; GitHub's free plan protects branches only on public repos, which is probably why. It holds no secrets: the Team ID is public by design, and no signing material is in the tree. Marty: "d19 is ratified." |
 | D20 | ratified 2026-11-09 | MVP | **The project is licensed GPL-3.0-or-later** (`LICENSE`, text unchanged), following turing-review's upstream `D77`. Marty: "all projects begin life with a copyleft, open source license." GPL-3.0 was the agent's pick. |
+| D21 | ratified 2026-11-10 | MVP | **A seconds countdown, in the app and as a widget style, amending spec §2's "no seconds-level ticking" and `FR10`.** Widgets use the system's live timer text, so it ticks without extra timeline entries; its exact look on each family is **unverified** until `F3` runs it. The app shows it in `F1-T5`; the widget style arrives with `F3`. Marty: "I want to timer to be able to count down in seconds too. it's a novelty function, but, i want it." |
 
 ## Features (F)
 
@@ -39,7 +40,7 @@ Immutable once ratified. Supersede, never edit. A rejected row stays, struck thr
 |---|---|---|---|---|---|
 | F1 | Lock Screen and Mac desktop widgets: Hours, Stacked and Days styles, the host app, iCloud sync | not built — plan approved 2026-11-09 ("f1 us aoorived"); building | Phase 2 | `C2`, `O6` | [F1](F1.md) |
 | F2 | Apple Watch complications | not built | Phase 3 | `F1` | at `G3` |
-| F3 | Sentence, Ring, Bar and Milestone styles, accent colors, the count-up state, Dynamic Type, VoiceOver | not built | Phase 4 | `F1` | at `G4` |
+| F3 | Sentence, Ring, Bar, Milestone and Seconds (`D21`) styles, accent colors, the count-up state, Dynamic Type, VoiceOver | not built | Phase 4 | `F1` | at `G4` |
 
 ## Chores (C)
 

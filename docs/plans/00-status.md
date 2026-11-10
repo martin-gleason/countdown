@@ -17,7 +17,7 @@ Named, never numbered (`D2`). **No source read here marks a milestone as the cur
 
 | Milestone | Decisions landing here | Units |
 |---|---|---|
-| MVP | 20 | — |
+| MVP | 21 | — |
 | — | 0 | C1, F1 |
 
 ## Features and chores
@@ -35,7 +35,7 @@ Counted from the register itself. A register with no rows still gets a line.
 
 | Register | Rows | Open | Unknown | Closed |
 |---|---|---|---|---|
-| Decisions (`D`) | 20 | 0 | 0 | 20 |
+| Decisions (`D`) | 21 | 0 | 0 | 21 |
 | Risks (`RR`) | 9 | 9 | 0 | 0 |
 | Owner items (`O`) | 8 | 2 | 0 | 6 |
 | Agent items (`A`) | 4 | 3 | 0 | 1 |
@@ -49,7 +49,7 @@ Counted from the register itself. A register with no rows still gets a line.
 
 | Register | Status | Count |
 |---|---|---|
-| `D` | ratified | 20 |
+| `D` | ratified | 21 |
 | `RR` | open | 9 |
 | `O` | done | 6 |
 | `O` | open | 2 |
@@ -103,7 +103,7 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | unassigned | A4 | P2 | open | Upstream stamp.py --check compares Edited with the last commit at minute resolution, so an edit within the same minute p… |
 | unassigned | F1 | — | not built | Lock Screen and Mac desktop widgets: Hours, Stacked and Days styles, the host app, iCloud sync |
 | unassigned | F2 | — | not built | Apple Watch complications |
-| unassigned | F3 | — | not built | Sentence, Ring, Bar and Milestone styles, accent colors, the count-up state, Dynamic Type, VoiceOver |
+| unassigned | F3 | — | not built | Sentence, Ring, Bar, Milestone and Seconds (D21) styles, accent colors, the count-up state, Dynamic Type, VoiceOver |
 | unassigned | G3 | — | open | F1 renders on iPhone and Mac in all three rendering modes; a target set on one appears on the other |
 | unassigned | G4 | — | open | F2 complication is live on a watch face |
 | unassigned | G5 | — | open | F3 passes at the largest Dynamic Type size and under VoiceOver |
