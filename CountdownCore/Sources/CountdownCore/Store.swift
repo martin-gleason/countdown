@@ -1,4 +1,4 @@
-// Created: 2026-11-10 07:46 -06:00 · Edited: 2026-11-10 07:46 -06:00
+// Created: 2026-11-10 07:46 -06:00 · Edited: 2026-11-10 08:03 -06:00
 import Foundation
 
 /// The one synced record (`FR4`, `D5`): what every device counts down to.
@@ -43,6 +43,13 @@ public enum SyncResult: Equatable, Sendable {
     case pushedLocal
 }
 
+/// What a guarded save did.
+public enum SaveResult: Equatable, Sendable {
+    case saved
+    /// A newer record arrived while the edit was open. Nothing was written.
+    case superseded
+}
+
 /// The App Group copy, mirrored to iCloud by the host apps (spec §2). Widgets construct it
 /// with no `cloud`: they read the App Group only.
 public final class SharedCountdownStore {
@@ -71,6 +78,19 @@ public final class SharedCountdownStore {
         let data = Self.encode(r)
         local.set(data, forKey: Self.recordKey)
         cloud?.set(data, forKey: Self.recordKey)
+    }
+
+    /// Save an edit that began from `base`: the record the editor loaded, or `nil` when it
+    /// started from the spec's default. Syncs first, and **refuses the edit if a different record
+    /// has arrived since**, so a new device opened before iCloud delivers cannot push the default
+    /// target over the real one by changing one field (`D5`, `RR4`; F1 review finding 1).
+    @discardableResult
+    public func save(_ record: CountdownRecord, editing base: CountdownRecord?,
+                     now: Date = .now) -> SaveResult {
+        sync()
+        guard self.record == base else { return .superseded }
+        save(record, now: now)
+        return .saved
     }
 
     /// Reconcile with iCloud: at launch and on every iCloud change. The newest record wins,

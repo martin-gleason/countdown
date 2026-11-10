@@ -40,7 +40,7 @@ Counted from the register itself. A register with no rows still gets a line.
 | Owner items (`O`) | 8 | 2 | 0 | 6 |
 | Agent items (`A`) | 4 | 3 | 0 | 1 |
 | Hooks (`H`) | 8 | 0 | 0 | 8 |
-| Mutations (`M`) | 20 | 0 | 0 | 20 |
+| Mutations (`M`) | 23 | 0 | 0 | 23 |
 | Chores (`C`) | 5 | 1 | 0 | 4 |
 | Other (F) (`F`) | 3 | 3 | 0 | 0 |
 | Gates (`G`) | 6 | 4 | 0 | 2 |
@@ -56,7 +56,7 @@ Counted from the register itself. A register with no rows still gets a line.
 | `A` | done | 1 |
 | `A` | open | 3 |
 | `H` | built | 8 |
-| `M` | killed | 20 |
+| `M` | killed | 23 |
 | `C` | built | 1 |
 | `C` | done | 3 |
 | `C` | open | 1 |

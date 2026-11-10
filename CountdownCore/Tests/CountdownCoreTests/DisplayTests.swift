@@ -1,4 +1,4 @@
-// Created: 2026-11-10 07:50 -06:00 · Edited: 2026-11-10 07:50 -06:00
+// Created: 2026-11-10 07:50 -06:00 · Edited: 2026-11-10 08:03 -06:00
 import Foundation
 import Testing
 @testable import CountdownCore
@@ -67,6 +67,7 @@ struct DisplayTests {
         #expect(d.targetDate.contains("Jun 30, 2030"))
         #expect(d.targetDate.contains("5:00"))
         #expect(!d.targetDate.contains("Jul 1"))
+        #expect(d.targetDate.hasSuffix("CDT"))
     }
 
     @Test("FR6: abbreviation floors, so 34,999 hours reads 34.9k, never 35k")

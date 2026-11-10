@@ -1,4 +1,4 @@
-// Created: 2026-11-10 07:50 -06:00 · Edited: 2026-11-10 07:50 -06:00
+// Created: 2026-11-10 07:50 -06:00 · Edited: 2026-11-10 08:03 -06:00
 import Foundation
 
 /// The words and numbers a style shows, worked out once so every family and the app agree
@@ -71,8 +71,11 @@ public struct CountdownDisplay: Equatable, Sendable {
         let zone = TimeZone(identifier: record.timeZone) ?? calendar.timeZone
         var gregorian = Calendar(identifier: .gregorian)
         gregorian.timeZone = zone
-        targetDate = record.target.formatted(
+        // The zone is named, so a wall time from another zone is not read as local (F1 review
+        // finding 4): "Jun 30, 2030 at 5:00 PM CDT".
+        let when = record.target.formatted(
             Date.FormatStyle(date: .abbreviated, time: .shortened, locale: locale,
                              calendar: gregorian, timeZone: zone))
+        targetDate = zone.abbreviation(for: record.target).map { "\(when) \($0)" } ?? when
     }
 }

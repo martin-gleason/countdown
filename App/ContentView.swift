@@ -1,4 +1,4 @@
-// Created: 2026-11-10 07:54 -06:00 · Edited: 2026-11-10 07:54 -06:00
+// Created: 2026-11-10 07:54 -06:00 · Edited: 2026-11-10 08:03 -06:00
 import SwiftUI
 import Combine
 import CountdownCore
@@ -10,6 +10,8 @@ struct ContentView: View {
     let model: AppModel
     @State private var draft = CountdownRecord.specDefault
     @State private var hasStart = false
+    @State private var base: CountdownRecord?
+    @State private var notice: String?
     @State private var now = Date.now
     @Environment(\.scenePhase) private var scenePhase
     /// `TimelineView(.everyMinute)` froze on the Mac (2026-11-10), so the clock is re-read on a
@@ -20,7 +22,7 @@ struct ContentView: View {
         NavigationStack {
             Form {
                 Section { countdown }
-                Section("Target, shared by all your devices") {
+                Section {
                     TextField("Label", text: $draft.label)
                     Picker("Time zone", selection: $draft.timeZone) {
                         ForEach(TimeZone.knownTimeZoneIdentifiers, id: \.self) { Text($0) }
@@ -33,12 +35,24 @@ struct ContentView: View {
                         DatePicker("Start", selection: Binding(get: { draft.start ?? .now },
                                                                set: { draft.start = $0 }))
                     }
-                    Button("Save") {
+                    Button(model.hasSharedTarget ? "Save" : "Set as the shared target") {
                         var r = draft
                         r.start = hasStart ? (draft.start ?? .now) : nil
-                        model.save(r)
+                        if model.save(r, editing: base) == .superseded {
+                            notice = "Another device's target arrived while you were editing, so it is shown instead. Nothing was saved."
+                        } else {
+                            notice = nil
+                        }
                     }
                     .disabled(!isEdited)
+                } header: {
+                    Text("Target, shared by all your devices")
+                } footer: {
+                    if let notice {
+                        Text(notice)
+                    } else if !model.hasSharedTarget {
+                        Text("No shared target has arrived from iCloud yet. If you set one on another device, wait for it; setting one here replaces it everywhere.")
+                    }
                 }
                 Section("This device") {
                     Picker("Style", selection: Binding(get: { model.deviceStyle },
@@ -52,6 +66,7 @@ struct ContentView: View {
         }
         .onAppear { load() }
         .onChange(of: model.record) { load() }
+        .onChange(of: hasStart) { _, on in if on && draft.start == nil { draft.start = .now } }
         .onReceive(tick) { now = $0 }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { now = .now; model.sync() }
@@ -95,6 +110,7 @@ struct ContentView: View {
 
     private func load() {
         draft = model.record
+        base = model.editingBase
         hasStart = model.record.start != nil
     }
 }

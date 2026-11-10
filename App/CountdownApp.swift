@@ -1,4 +1,4 @@
-// Created: 2026-11-09 07:37 -06:00 · Edited: 2026-11-10 07:54 -06:00
+// Created: 2026-11-09 07:37 -06:00 · Edited: 2026-11-10 08:03 -06:00
 import SwiftUI
 import Combine
 import WidgetKit
@@ -56,9 +56,18 @@ final class AppModel {
         }
     }
 
-    func save(_ edited: CountdownRecord) {
-        store.save(edited)
+    /// Whether any device has set a target yet; until then the form shows the spec's default.
+    var hasSharedTarget: Bool { store.record != nil }
+
+    /// The record the form loaded: what an edit is based on (`nil` while showing the default).
+    var editingBase: CountdownRecord? { store.record }
+
+    /// Saves unless a newer record arrived while the form was open; then the form reloads
+    /// with that record and nothing is written (F1 review finding 1).
+    func save(_ edited: CountdownRecord, editing base: CountdownRecord?) -> SaveResult {
+        let result = store.save(edited, editing: base)
         record = store.current
         WidgetCenter.shared.reloadAllTimelines()
+        return result
     }
 }

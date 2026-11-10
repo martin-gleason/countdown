@@ -1,6 +1,6 @@
 # Register — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-10 07:51 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-10 08:03 -06:00
 
 Every register for this project, one `##` each. Baseline: [countdown-widget-spec.md](../specs/countdown-widget-spec.md) (frozen 2026-11-08). **Where this register and the spec disagree, the register wins.** First-gate plan: [mvp.md](mvp.md). Open questions: [2026-11-08 spec review](../handoffs/2026-11-08-spec-review.md).
 
@@ -77,7 +77,7 @@ A gate is an event: the owner's explicit yes. It is recorded here when it happen
 | RR6 | WidgetKit and Liquid Glass APIs differ between the iOS 26 floor and the Xcode 27.2 SDK in use. | open | medium | medium | Spec §3 check of Apple's docs as `F1-T1`. | agent |
 | RR7 | CI's `macos-26` runner has Xcode 26.6 and Swift 6.3.3 (run on PR #2, 2026-11-08); local is Xcode 27.2 and Swift 6.4.2. Code using Swift 6.4 or the iOS 27 SDK would pass locally and fail CI. | open | medium | medium | Keep `swift-tools-version` at 6.2 and the iOS 26 floor (`NFR1`); CI prints its toolchain on every run. | agent |
 | RR8 | A malformed style JSON shows only at runtime, as a blank widget. | open | medium | medium | `D8`: every bundled file is decoded in tests; mutation `M5`. | agent |
-| RR9 | The Xcode project file is written by hand (`D14` rules out generators), and Xcode may refuse it or rewrite it on first open. | open — `xcodebuild` accepts it on Xcode 27.2 (2026-11-09); CI's Xcode 26.6 and Marty's first open still to show | medium | low | `xcodebuild build` in CI from `F1-T1`; Marty's first open in Xcode is part of that task's checkpoint. | agent |
+| RR9 | The Xcode project file is written by hand (`D14` rules out generators), and Xcode may refuse it or rewrite it on first open. | open — Xcode 26.6 (CI) and 27.2 build it; Marty's Xcode reformatted it on first open (2026-11-10), formatting only, and that form is committed | medium | low | `xcodebuild build` in CI from `F1-T1`; Marty's first open in Xcode is part of that task's checkpoint. | agent |
 
 ## Owner items (O)
 
@@ -142,6 +142,9 @@ All `proposed` until applied to shipped code and seen to fail.
 | M19 | The target date shown in the current zone, not its entry zone (`D6`) | `DisplayTests/targetDateInEntryZone` (`F1`) | killed 2026-11-10 — Run: run |
 | M20 | "Device default" draws Hours instead of the device's chosen style (`D7`) | `StoreTests/deviceDefaultStyle` (`F1`) | killed 2026-11-10 — Run: run |
 | M21 | Abbreviation rounds 34,999 hours up to 35k (`FR6`) | `DisplayTests/abbreviationFloors` (`F1`) | killed 2026-11-10 — Run: run |
+| M22 | A save begun from the default goes through after the real record arrived (`D5`; F1 review) | `StoreTests/staleEditRefused` (`F1`) | killed 2026-11-10 — Run: run |
+| M23 | A record set while iCloud was empty is never pushed (`D5`; F1 review) | `StoreTests/pushesWhenCloudEmpty` (`F1`) | killed 2026-11-10 — Run: run |
+| M24 | The target date drops its zone name (`D6`; F1 review) | `DisplayTests/targetDateInEntryZone` (`F1`) | killed 2026-11-10 — Run: run |
 
 -----
 2026-11-08
