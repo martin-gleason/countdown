@@ -1,6 +1,6 @@
 # Register — Countdown
 
-Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-10 07:36 -06:00
+Created: 2026-11-08 21:00 -06:00 · Edited: 2026-11-10 07:47 -06:00
 
 Every register for this project, one `##` each. Baseline: [countdown-widget-spec.md](../specs/countdown-widget-spec.md) (frozen 2026-11-08). **Where this register and the spec disagree, the register wins.** First-gate plan: [mvp.md](mvp.md). Open questions: [2026-11-08 spec review](../handoffs/2026-11-08-spec-review.md).
 
@@ -129,7 +129,7 @@ All `proposed` until applied to shipped code and seen to fail.
 | M5 | A style fallback cycle is not detected | `StyleTests/cycleDetected` (fails, does not hang) | killed 2026-11-08 — Run: run |
 | M6 | Ring/Bar progress not clamped to 0…1 | `SnapshotTests/progress` | killed 2026-11-08 — Run: run |
 | M7 | Days computed as seconds ÷ 86,400 | `SnapshotTests/springForward` | killed 2026-11-08 — Run: run |
-| M8 | A missing iCloud value replaced by the default and written back (`D5`) | `StoreTests/firstLaunchKeepsRemote` (`F1`) | proposed |
+| M8 | A missing iCloud value replaced by the default and written back (`D5`) | `StoreTests/firstLaunchKeepsRemote` (`F1`) | killed 2026-11-10 — Run: run |
 | M9 | The final hour starts at exactly target − 1 h instead of just after it (`D16`) | `SnapshotTests/finalHourStarts` | killed 2026-11-08 — Run: run |
 | M10 | Timeline entries dated on the boundary instead of one second after (`D18`) | `TimelineTests/kolkataHalfHour` | killed 2026-11-08 — Run: run |
 | M11 | A style file that fails to decode is dropped silently (`RR8`) | `StyleTests/directoryRecordsFailures` | killed 2026-11-08 — Run: run |
@@ -137,10 +137,10 @@ All `proposed` until applied to shipped code and seen to fail.
 | M13 | Local midnights dropped from the timeline candidates (`D18`) | `TimelineTests/kolkataMonthEndMidnight` | killed 2026-11-08 — Run: run |
 | M15 | A misspelt field in a style file is ignored instead of refused (`RR8`) | `StyleTests/misspeltFieldsRefused` | killed 2026-11-08 — Run: run |
 | M16 | A failed resolve draws Hours without the family's typography (`RR5`) | `StyleTests/failuresKeepFamilyTypography` | killed 2026-11-08 — Run: run |
-| M17 | The store's merge keeps the older record (`D5`) | `StoreTests/newestWins` (`F1`) | proposed |
+| M17 | The store's merge keeps the older record (`D5`) | `StoreTests/newestWins` (`F1`) | killed 2026-11-10 — Run: run |
 | M18 | Hours shown without grouping (`34872`) | `DisplayTests/hoursGrouped` (`F1`) | proposed |
 | M19 | The target date shown in the current zone, not its entry zone (`D6`) | `DisplayTests/targetDateInEntryZone` (`F1`) | proposed |
-| M20 | "Device default" draws Hours instead of the device's chosen style (`D7`) | `StoreTests/deviceDefaultStyle` (`F1`) | proposed |
+| M20 | "Device default" draws Hours instead of the device's chosen style (`D7`) | `StoreTests/deviceDefaultStyle` (`F1`) | killed 2026-11-10 — Run: run |
 
 -----
 2026-11-08
