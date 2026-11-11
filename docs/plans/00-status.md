@@ -40,7 +40,7 @@ Counted from the register itself. A register with no rows still gets a line.
 | Owner items (`O`) | 8 | 2 | 0 | 6 |
 | Agent items (`A`) | 4 | 3 | 0 | 1 |
 | Hooks (`H`) | 8 | 0 | 0 | 8 |
-| Mutations (`M`) | 19 | 5 | 0 | 14 |
+| Mutations (`M`) | 19 | 2 | 0 | 17 |
 | Chores (`C`) | 5 | 1 | 0 | 4 |
 | Other (F) (`F`) | 3 | 3 | 0 | 0 |
 | Gates (`G`) | 6 | 4 | 0 | 2 |
@@ -56,8 +56,8 @@ Counted from the register itself. A register with no rows still gets a line.
 | `A` | done | 1 |
 | `A` | open | 3 |
 | `H` | built | 8 |
-| `M` | killed | 14 |
-| `M` | proposed | 5 |
+| `M` | killed | 17 |
+| `M` | proposed | 2 |
 | `C` | built | 1 |
 | `C` | done | 3 |
 | `C` | open | 1 |
@@ -108,12 +108,9 @@ Every open row in the register. Owner is the row's Owner column where the table 
 | unassigned | G4 | — | open | F2 complication is live on a watch face |
 | unassigned | G5 | — | open | F3 passes at the largest Dynamic Type size and under VoiceOver |
 | unassigned | G6 | — | open | MVP: still running on every device after 8 days |
-| unassigned | M8 | — | proposed | A missing iCloud value replaced by the default and written back (D5) |
-| unassigned | M17 | — | proposed | The store's merge keeps the older record (D5) |
 | unassigned | M18 | — | proposed | Hours shown without grouping (34872) |
 | unassigned | M19 | — | proposed | The target date shown in the current zone, not its entry zone (D6) |
-| unassigned | M20 | — | proposed | "Device default" draws Hours instead of the device's chosen style (D7) |
 
 ---
 
-27 open register rows.
+24 open register rows.
