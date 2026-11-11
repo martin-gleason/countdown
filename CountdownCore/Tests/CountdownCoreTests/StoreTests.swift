@@ -1,4 +1,4 @@
-// Created: 2026-11-10 07:46 -06:00 · Edited: 2026-11-10 07:46 -06:00
+// Created: 2026-11-10 07:46 -06:00 · Edited: 2026-11-10 08:03 -06:00
 import Foundation
 import Testing
 @testable import CountdownCore
@@ -61,6 +61,34 @@ struct StoreTests {
         let s2 = SharedCountdownStore(local: l2, cloud: c2)
         #expect(s2.sync() == .pushedLocal)
         #expect(SharedCountdownStore.decode(c2.data(forKey: SharedCountdownStore.recordKey)) == newer)
+    }
+
+    @Test("D5: an edit begun from the default is refused once a real record has arrived")
+    func staleEditRefused() {
+        let vacation = Self.record("Vacation", modified: Self.t0)
+        let local = MemoryBacking(), cloud = MemoryBacking()
+        let phone = SharedCountdownStore(local: local, cloud: cloud)
+        var draft = phone.current                  // the editor opens before iCloud delivers
+        let base = phone.record                    // nil: the draft is the spec's default
+        cloud.values[SharedCountdownStore.recordKey] = SharedCountdownStore.encode(vacation)
+        draft.countUp.toggle()
+        #expect(phone.save(draft, editing: base, now: Self.t0.addingTimeInterval(600)) == .superseded)
+        #expect(phone.record == vacation)
+        #expect(SharedCountdownStore.decode(cloud.data(forKey: SharedCountdownStore.recordKey)) == vacation)
+
+        var edit = phone.current
+        edit.label = "Beach"
+        #expect(phone.save(edit, editing: phone.record, now: Self.t0.addingTimeInterval(700)) == .saved)
+        #expect(phone.record?.label == "Beach")
+    }
+
+    @Test("D5: a record set while iCloud was empty is pushed when iCloud comes back")
+    func pushesWhenCloudEmpty() {
+        let r = Self.record("Retirement", modified: Self.t0)
+        let local = MemoryBacking(), cloud = MemoryBacking()
+        local.values[SharedCountdownStore.recordKey] = SharedCountdownStore.encode(r)
+        #expect(SharedCountdownStore(local: local, cloud: cloud).sync() == .pushedLocal)
+        #expect(SharedCountdownStore.decode(cloud.data(forKey: SharedCountdownStore.recordKey)) == r)
     }
 
     @Test("D5: equal records leave both stores untouched, and a widget's store never syncs")

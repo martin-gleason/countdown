@@ -112,10 +112,52 @@
   "caught_by": "StoreTests/newestWins"
  },
  {
+  "id": "M18",
+  "file": "CountdownCore/Sources/CountdownCore/Display.swift",
+  "find": "format.usesGroupingSeparator = style.numberFormat.grouping",
+  "replace": "format.usesGroupingSeparator = false",
+  "caught_by": "DisplayTests/hoursGrouped"
+ },
+ {
+  "id": "M19",
+  "file": "CountdownCore/Sources/CountdownCore/Display.swift",
+  "find": "let zone = TimeZone(identifier: record.timeZone) ?? calendar.timeZone",
+  "replace": "let zone = calendar.timeZone",
+  "caught_by": "DisplayTests/targetDateInEntryZone"
+ },
+ {
   "id": "M20",
   "file": "CountdownCore/Sources/CountdownCore/Store.swift",
   "find": "return deviceStyle ?? \"hours\"",
   "replace": "return \"hours\"",
   "caught_by": "StoreTests/deviceDefaultStyle"
+ },
+ {
+  "id": "M21",
+  "file": "CountdownCore/Sources/CountdownCore/Display.swift",
+  "find": "format.roundingMode = .down",
+  "replace": "format.roundingMode = .halfEven",
+  "caught_by": "DisplayTests/abbreviationFloors"
+ },
+ {
+  "id": "M22",
+  "file": "CountdownCore/Sources/CountdownCore/Store.swift",
+  "find": "guard self.record == base else { return .superseded }",
+  "replace": "guard true else { return .superseded }",
+  "caught_by": "StoreTests/staleEditRefused"
+ },
+ {
+  "id": "M23",
+  "file": "CountdownCore/Sources/CountdownCore/Store.swift",
+  "find": "                cloud.set(Self.encode(l), forKey: Self.recordKey)\n                return .pushedLocal\n            }\n            return .unchanged",
+  "replace": "                _ = l\n            }\n            return .unchanged",
+  "caught_by": "StoreTests/pushesWhenCloudEmpty"
+ },
+ {
+  "id": "M24",
+  "file": "CountdownCore/Sources/CountdownCore/Display.swift",
+  "find": "targetDate = zone.abbreviation(for: record.target).map { \"\\(when) \\($0)\" } ?? when",
+  "replace": "targetDate = when",
+  "caught_by": "DisplayTests/targetDateInEntryZone"
  }
 ]

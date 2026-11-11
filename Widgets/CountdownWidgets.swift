@@ -1,47 +1,70 @@
-// Created: 2026-11-09 07:37 -06:00 · Edited: 2026-11-09 07:37 -06:00
+// Created: 2026-11-09 07:37 -06:00 · Edited: 2026-11-10 07:52 -06:00
 import SwiftUI
 import WidgetKit
 import CountdownCore
 
-/// The widget extension (`F1`). A placeholder until `F1-T4`: Hours to the spec's target,
-/// on the timeline CountdownCore plans (`D18`).
+/// The widget extension (`F1`, `FR1`, `FR2`). It reads the App Group only; iCloud is the
+/// host app's job (spec §2).
 @main
 struct CountdownWidgets: WidgetBundle {
-    var body: some Widget { HoursWidget() }
+    var body: some Widget { CountdownWidget() }
 }
 
-struct HoursEntry: TimelineEntry {
+struct CountdownEntry: TimelineEntry {
     let date: Date
+    let record: CountdownRecord
+    let styleName: String
 }
 
-struct HoursProvider: TimelineProvider {
-    func placeholder(in context: Context) -> HoursEntry { HoursEntry(date: .now) }
-
-    func getSnapshot(in context: Context, completion: @escaping (HoursEntry) -> Void) {
-        completion(HoursEntry(date: .now))
+struct CountdownProvider: AppIntentTimelineProvider {
+    private var store: SharedCountdownStore {
+        SharedCountdownStore(local: UserDefaults(suiteName: AppGroup.id) ?? .standard)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<HoursEntry>) -> Void) {
-        let plan = timelinePlan(from: .now, target: Placeholder.target)
-        completion(Timeline(entries: plan.entries.map(HoursEntry.init), policy: .after(plan.reloadAfter)))
+    func placeholder(in context: Context) -> CountdownEntry {
+        CountdownEntry(date: .now, record: .specDefault, styleName: "hours")
+    }
+
+    func snapshot(for configuration: StyleIntent, in context: Context) async -> CountdownEntry {
+        let store = store
+        return CountdownEntry(date: .now, record: store.current,
+                              styleName: store.styleName(for: configuration.style?.id))
+    }
+
+    /// An entry one second after every change in what is shown, from CountdownCore (`D18`).
+    func timeline(for configuration: StyleIntent, in context: Context) async -> Timeline<CountdownEntry> {
+        let store = store
+        let record = store.current
+        let name = store.styleName(for: configuration.style?.id)
+        let plan = timelinePlan(from: .now, target: record.target)
+        return Timeline(entries: plan.entries.map { CountdownEntry(date: $0, record: record, styleName: name) },
+                        policy: .after(plan.reloadAfter))
     }
 }
 
-struct HoursWidget: Widget {
+struct CountdownWidgetView: View {
+    @Environment(\.widgetFamily) private var widgetFamily
+    let entry: CountdownEntry
+
+    var body: some View {
+        let family = Family(widgetFamily) ?? .systemSmall
+        let resolved = StyleLibrary.bundled.resolve(entry.styleName, for: family,
+                                                    hasStartDate: entry.record.start != nil)
+        let snapshot = CountdownSnapshot(at: entry.date, target: entry.record.target,
+                                         countUp: entry.record.countUp, start: entry.record.start)
+        StyleView(display: CountdownDisplay(snapshot: snapshot, style: resolved.style, record: entry.record),
+                  style: resolved.style, family: family)
+            .containerBackground(.fill.tertiary, for: .widget)
+    }
+}
+
+struct CountdownWidget: Widget {
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "Countdown", provider: HoursProvider()) { entry in
-            VStack(spacing: 0) {
-                Text(hoursRemaining(from: entry.date, to: Placeholder.target),
-                     format: .number.grouping(.automatic))
-                    .font(.system(.title, design: .rounded).monospacedDigit())
-                    .minimumScaleFactor(0.5)
-                    .widgetAccentable()
-                Text("hours").font(.caption2)
-            }
-            .containerBackground(for: .widget) { Color.clear }
+        AppIntentConfiguration(kind: "Countdown", intent: StyleIntent.self, provider: CountdownProvider()) { entry in
+            CountdownWidgetView(entry: entry)
         }
         .configurationDisplayName("Countdown")
-        .description("Hours until the target.")
+        .description("How long until then.")
         .supportedFamilies(families)
     }
 
@@ -53,3 +76,28 @@ struct HoursWidget: Widget {
         #endif
     }
 }
+
+// Previews: one per family, with an entry per bundled style. Step through the entries, and
+// switch the canvas between full color, accented and vibrant.
+private func previewEntry(_ style: String) -> CountdownEntry {
+    CountdownEntry(date: .now, record: .specDefault, styleName: style)
+}
+
+#if os(macOS)
+#Preview("Small", as: .systemSmall) { CountdownWidget() } timeline: {
+    previewEntry("hours"); previewEntry("stacked"); previewEntry("days")
+}
+#Preview("Medium", as: .systemMedium) { CountdownWidget() } timeline: {
+    previewEntry("hours"); previewEntry("stacked"); previewEntry("days")
+}
+#else
+#Preview("Inline", as: .accessoryInline) { CountdownWidget() } timeline: {
+    previewEntry("hours"); previewEntry("stacked"); previewEntry("days")
+}
+#Preview("Circular", as: .accessoryCircular) { CountdownWidget() } timeline: {
+    previewEntry("hours"); previewEntry("stacked"); previewEntry("days")
+}
+#Preview("Rectangular", as: .accessoryRectangular) { CountdownWidget() } timeline: {
+    previewEntry("hours"); previewEntry("stacked"); previewEntry("days")
+}
+#endif
